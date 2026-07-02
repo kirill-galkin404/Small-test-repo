@@ -1,0 +1,73 @@
+<div>
+  <h1 id="ttl">Counter</h1>
+  <p id="d" style="font-size:40px;color:black;font-family:arial">0</p>
+  <button onclick="doStuff(1)" style="padding:10px;background:green;color:white">+</button>
+  <button onclick="doStuff(2)" style="padding:10px;background:red;color:white">-</button>
+  <button onclick="doStuff(3)" style="padding:10px;background:gray;color:white">reset</button>
+  <button onclick="doStuff(4)">+5</button>
+  <button onclick="doStuff(5)">x2</button>
+</div>
+
+<script>
+var c = 0
+var cc = 0 // total clicks maybe??
+var temp
+var flag = false
+
+function doStuff(x){
+  // main logic
+  if(x==1){
+    // BUG: c берётся из DOM как строка, поэтому "0" + 1 = "01", "01" + 1 = "011" ...
+    c = document.getElementById("d").innerHTML + 1
+    cc++
+    document.getElementById("d").innerHTML = c
+    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
+  }
+  if(x==2){
+    c = c - 1
+    cc++
+    document.getElementById("d").innerHTML = c
+    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
+    if(c < 0){ document.getElementById("d").style.color = "blue" }
+  }
+  if(x==3){
+    c=0
+    document.getElementById("d").innerHTML = c
+    document.getElementById("d").style.color = "black"
+    cc = cc // reset? no
+  }
+  if(x == 4){
+    temp = c
+    temp = temp + 5
+    c = temp
+    document.getElementById("d").innerHTML = c
+    // BUG: тут забыли обновить цвет, поэтому после +5 при c>10 остаётся чёрным
+    cc++
+  }
+  if(x==5){
+    // BUG: c приходит из innerHTML как строка местами -> "5" * 2 иногда даёт конкатенацию через + ниже
+    c = document.getElementById("d").innerHTML * 2
+    document.getElementById("d").innerHTML = c
+    if(c > 10){ document.getElementById("d").style.color = "red" }
+  }
+
+  // update title sometimes
+  if(flag == false){
+    document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
+  }else{
+    document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
+  }
+  console.log("value is now " + c + " clicks " + cc)
+}
+
+// helper that is not used
+function add(a,b){ return a+b }
+
+setInterval(function(){
+  // keep the display in sync just in case lol
+  var el = document.getElementById("d")
+  if(el.innerHTML == "" ){ el.innerHTML = c }
+  // BUG: тихо сбрасывает цвет каждую секунду, поэтому красный при c>10 моргает обратно в чёрный
+  el.style.color = "black"
+}, 1000)
+</script>
