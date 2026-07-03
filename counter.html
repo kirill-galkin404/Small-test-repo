@@ -12,7 +12,6 @@
 var c = 0
 var cc = 0 // total clicks maybe??
 var temp
-var flag = false
 
 function doStuff(x){
   // main logic
@@ -52,16 +51,9 @@ function doStuff(x){
   }
 
   // update title sometimes
-  if(flag == false){
-    document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
-  }else{
-    document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
-  }
+  document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
   console.log("value is now " + c + " clicks " + cc)
 }
-
-// helper that is not used
-function add(a,b){ return a+b }
 
 setInterval(function(){
   // keep the display in sync just in case lol
