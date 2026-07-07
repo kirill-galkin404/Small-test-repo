@@ -1,40 +1,43 @@
 <div>
   <h1 id="ttl">Counter</h1>
   <p id="d" style="font-size:40px;color:black;font-family:arial">0</p>
-  <button onclick="doStuff(1)" style="padding:10px;background:green;color:white">+</button>
-  <button onclick="doStuff(2)" style="padding:10px;background:red;color:white">-</button>
-  <button onclick="doStuff(3)" style="padding:10px;background:gray;color:white">reset</button>
-  <button onclick="doStuff(4)">+5</button>
-  <button onclick="doStuff(5)">x2</button>
+  <button onclick="doStuff(ACTION.INCREMENT)" style="padding:10px;background:green;color:white">+</button>
+  <button onclick="doStuff(ACTION.DECREMENT)" style="padding:10px;background:red;color:white">-</button>
+  <button onclick="doStuff(ACTION.RESET)" style="padding:10px;background:gray;color:white">reset</button>
+  <button onclick="doStuff(ACTION.ADD_FIVE)">+5</button>
+  <button onclick="doStuff(ACTION.DOUBLE)">x2</button>
 </div>
 
 <script>
+// Relies on this staying a classic (non-module) inline script: onclick
+// attributes need ACTION to be reachable from global scope.
+const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FIVE: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // total clicks maybe??
 var temp
 
 function doStuff(x){
   // main logic
-  if(x==1){
+  if(x === ACTION.INCREMENT){
     // BUG: c берётся из DOM как строка, поэтому "0" + 1 = "01", "01" + 1 = "011" ...
     c = document.getElementById("d").innerHTML + 1
     cc++
     document.getElementById("d").innerHTML = c
     if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
   }
-  if(x==2){
+  if(x === ACTION.DECREMENT){
     c = c - 1
     cc++
     document.getElementById("d").innerHTML = c
     if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
     if(c < 0){ document.getElementById("d").style.color = "blue" }
   }
-  if(x==3){
+  if(x === ACTION.RESET){
     c=0
     document.getElementById("d").innerHTML = c
     document.getElementById("d").style.color = "black"
   }
-  if(x == 4){
+  if(x === ACTION.ADD_FIVE){
     temp = c
     temp = temp + 5
     c = temp
@@ -42,7 +45,7 @@ function doStuff(x){
     // BUG: тут забыли обновить цвет, поэтому после +5 при c>10 остаётся чёрным
     cc++
   }
-  if(x==5){
+  if(x === ACTION.DOUBLE){
     // BUG: c приходит из innerHTML как строка местами -> "5" * 2 иногда даёт конкатенацию через + ниже
     c = document.getElementById("d").innerHTML * 2
     document.getElementById("d").innerHTML = c
