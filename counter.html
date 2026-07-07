@@ -51,14 +51,5 @@ function doStuff(x){
 
   // update title sometimes
   document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
-  console.log("value is now " + c + " clicks " + cc)
 }
-
-setInterval(function(){
-  // keep the display in sync just in case lol
-  var el = document.getElementById("d")
-  if(el.innerHTML == "" ){ el.innerHTML = c }
-  // BUG: тихо сбрасывает цвет каждую секунду, поэтому красный при c>10 моргает обратно в чёрный
-  el.style.color = "black"
-}, 1000)
 </script>
