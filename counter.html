@@ -14,42 +14,39 @@
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FIVE: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // total clicks maybe??
-var temp
+
+function updateDisplay(c){
+  document.getElementById("d").innerHTML = c
+  if(c > 10){ document.getElementById("d").style.color = "red" }
+  else if(c < 0){ document.getElementById("d").style.color = "blue" }
+  else { document.getElementById("d").style.color = "black" }
+}
 
 function doStuff(x){
   // main logic
   if(x === ACTION.INCREMENT){
-    // BUG: c берётся из DOM как строка, поэтому "0" + 1 = "01", "01" + 1 = "011" ...
-    c = document.getElementById("d").innerHTML + 1
+    c = c + 1
     cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
+    updateDisplay(c)
   }
   if(x === ACTION.DECREMENT){
     c = c - 1
     cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
-    if(c < 0){ document.getElementById("d").style.color = "blue" }
+    updateDisplay(c)
   }
   if(x === ACTION.RESET){
     c=0
-    document.getElementById("d").innerHTML = c
-    document.getElementById("d").style.color = "black"
+    updateDisplay(c)
   }
   if(x === ACTION.ADD_FIVE){
-    temp = c
-    temp = temp + 5
+    const temp = c + 5
     c = temp
-    document.getElementById("d").innerHTML = c
-    // BUG: тут забыли обновить цвет, поэтому после +5 при c>10 остаётся чёрным
     cc++
+    updateDisplay(c)
   }
   if(x === ACTION.DOUBLE){
-    // BUG: c приходит из innerHTML как строка местами -> "5" * 2 иногда даёт конкатенацию через + ниже
-    c = document.getElementById("d").innerHTML * 2
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" }
+    c = c * 2
+    updateDisplay(c)
   }
 
   // update title sometimes
