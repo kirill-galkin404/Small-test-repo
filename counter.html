@@ -13,44 +13,54 @@
 // attributes need ACTION to be reachable from global scope.
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FIVE: 4, DOUBLE: 5 });
 var c = 0
-var cc = 0 // total clicks maybe??
+var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 var temp
 
 function doStuff(x){
   // main logic
-  if(x === ACTION.INCREMENT){
-    c = c + 1
-    cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
-  }
-  if(x === ACTION.DECREMENT){
-    c = c - 1
-    cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
-    if(c < 0){ document.getElementById("d").style.color = "blue" }
-  }
-  if(x === ACTION.RESET){
-    c=0
-    document.getElementById("d").innerHTML = c
-    document.getElementById("d").style.color = "black"
-  }
-  if(x === ACTION.ADD_FIVE){
-    temp = c
-    temp = temp + 5
-    c = temp
-    document.getElementById("d").innerHTML = c
-    // BUG: тут забыли обновить цвет, поэтому после +5 при c>10 остаётся чёрным
-    cc++
-  }
-  if(x === ACTION.DOUBLE){
-    c = c * 2
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" }
+  switch(x){
+    case ACTION.INCREMENT:
+      console.log("doStuff: ACTION.INCREMENT")
+      c = c + 1
+      break;
+    case ACTION.DECREMENT:
+      console.log("doStuff: ACTION.DECREMENT")
+      c = c - 1
+      break;
+    case ACTION.RESET:
+      console.log("doStuff: ACTION.RESET")
+      c = 0
+      break;
+    case ACTION.ADD_FIVE:
+      console.log("doStuff: ACTION.ADD_FIVE")
+      temp = c
+      temp = temp + 5
+      c = temp
+      break;
+    case ACTION.DOUBLE:
+      console.log("doStuff: ACTION.DOUBLE")
+      c = c * 2
+      break;
+    default:
+      console.warn("doStuff: unrecognized action", x)
+      return;
   }
 
-  // update title sometimes
+  render()
+}
+
+function render(){
+  cc++
+  document.getElementById("d").innerHTML = c
+  if(c > 10){
+    document.getElementById("d").style.color = "red"
+  } else if(c < 0){
+    document.getElementById("d").style.color = "blue"
+  } else {
+    document.getElementById("d").style.color = "black"
+  }
+
+  // update title
   document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
 }
 </script>
