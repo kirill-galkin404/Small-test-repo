@@ -46,11 +46,12 @@ function doStuff(x){
       return;
   }
 
+  cc++
+  console.log("doStuff: cc incremented to", cc)
   render()
 }
 
 function render(){
-  cc++
   document.getElementById("d").innerHTML = c
   if(c > 10){
     document.getElementById("d").style.color = "red"
