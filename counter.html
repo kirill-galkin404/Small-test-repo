@@ -20,20 +20,25 @@ function doStuff(x){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
+      console.log("doStuff: ACTION.INCREMENT")
       c = c + 1
       break;
     case ACTION.DECREMENT:
+      console.log("doStuff: ACTION.DECREMENT")
       c = c - 1
       break;
     case ACTION.RESET:
+      console.log("doStuff: ACTION.RESET")
       c = 0
       break;
     case ACTION.ADD_FIVE:
+      console.log("doStuff: ACTION.ADD_FIVE")
       temp = c
       temp = temp + 5
       c = temp
       break;
     case ACTION.DOUBLE:
+      console.log("doStuff: ACTION.DOUBLE")
       c = c * 2
       break;
     default:
