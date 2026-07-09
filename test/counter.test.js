@@ -85,6 +85,31 @@ function state(window) {
   assertEqual(s.ttl, "Counter (2 clicks)", "DECREMENT then INCREMENT: #ttl");
 })();
 
+// --- Uniform color rule: blue applies whenever c<0, regardless of which
+// action produced/left c negative — not just after DECREMENT. This is a
+// deliberate consequence of Phase 2's unified render block (documented in
+// counter.html), verified explicitly here since it differs from the
+// pre-refactor behavior (only DECREMENT ever produced blue). ---
+(function testBlueAppliesToAnyActionWhenNegative() {
+  const window = freshWindow();
+  for (let i = 0; i < 15; i++) {
+    window.doStuff(window.ACTION.DECREMENT); // c=-15
+  }
+  window.doStuff(window.ACTION.INCREMENT); // c=-14, still negative
+  const s = state(window);
+  assertEqual(s.text, "-14", "INCREMENT while still negative: #d text");
+  assertEqual(
+    s.color,
+    "blue",
+    "INCREMENT while still negative: #d color is blue (uniform color rule, not DECREMENT-only)"
+  );
+  assertEqual(
+    s.ttl,
+    "Counter (16 clicks)",
+    "INCREMENT while still negative: #ttl"
+  );
+})();
+
 // --- RESET: c goes to 0, color black, cc untouched ---
 (function testReset() {
   const window = freshWindow();

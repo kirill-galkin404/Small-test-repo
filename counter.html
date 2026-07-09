@@ -42,7 +42,13 @@ function doStuff(x){
   }
 
   // shared post-action render: #d text/color and #ttl are always kept in
-  // sync here, regardless of which action ran above.
+  // sync here, regardless of which action ran above. Deliberate decision:
+  // the color rule (red >10 / blue <0 / else black) is now derived purely
+  // from the current value of c, applied uniformly to every action. Before
+  // this refactor, only DECREMENT ever produced blue (INCREMENT/ADD_FIVE/
+  // RESET/DOUBLE never checked c<0); e.g. an INCREMENT that leaves c
+  // negative now renders blue where it used to stay black. This is an
+  // intended consequence of unifying the render logic, not an oversight.
   document.getElementById("d").innerHTML = c
   if(c > 10){
     document.getElementById("d").style.color = "red"
