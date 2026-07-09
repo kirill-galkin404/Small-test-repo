@@ -1,0 +1,12 @@
+{
+  "name": "small-test-repo",
+  "version": "1.0.0",
+  "description": "Intentionally messy counter, used for refactoring practice.",
+  "private": true,
+  "scripts": {
+    "test": "node test/counter.test.js"
+  },
+  "devDependencies": {
+    "jsdom": "^24.0.0"
+  }
+}

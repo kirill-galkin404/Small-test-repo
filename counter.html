@@ -14,43 +14,43 @@
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FIVE: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // total clicks maybe??
-var temp
 
 function doStuff(x){
   // main logic
-  if(x === ACTION.INCREMENT){
-    c = c + 1
-    cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
-  }
-  if(x === ACTION.DECREMENT){
-    c = c - 1
-    cc++
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" } else { document.getElementById("d").style.color = "black" }
-    if(c < 0){ document.getElementById("d").style.color = "blue" }
-  }
-  if(x === ACTION.RESET){
-    c=0
-    document.getElementById("d").innerHTML = c
-    document.getElementById("d").style.color = "black"
-  }
-  if(x === ACTION.ADD_FIVE){
-    temp = c
-    temp = temp + 5
-    c = temp
-    document.getElementById("d").innerHTML = c
-    // BUG: тут забыли обновить цвет, поэтому после +5 при c>10 остаётся чёрным
-    cc++
-  }
-  if(x === ACTION.DOUBLE){
-    c = c * 2
-    document.getElementById("d").innerHTML = c
-    if(c > 10){ document.getElementById("d").style.color = "red" }
+  switch(x){
+    case ACTION.INCREMENT:
+      c = c + 1
+      cc++
+      break
+    case ACTION.DECREMENT:
+      c = c - 1
+      cc++
+      break
+    case ACTION.RESET:
+      c = 0
+      break
+    case ACTION.ADD_FIVE:
+      c += 5
+      cc++
+      break
+    case ACTION.DOUBLE:
+      // Decision: DOUBLE counts as a click like every other action except
+      // RESET, so it increments cc too.
+      c = c * 2
+      cc++
+      break
   }
 
-  // update title sometimes
+  // shared post-action render: #d text/color and #ttl are always kept in
+  // sync here, regardless of which action ran above.
+  document.getElementById("d").innerHTML = c
+  if(c > 10){
+    document.getElementById("d").style.color = "red"
+  } else if(c < 0){
+    document.getElementById("d").style.color = "blue"
+  } else {
+    document.getElementById("d").style.color = "black"
+  }
   document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
 }
 </script>
