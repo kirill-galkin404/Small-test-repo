@@ -14,7 +14,6 @@
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FIVE: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
-var temp
 
 function doStuff(x){
   // main logic
@@ -33,9 +32,7 @@ function doStuff(x){
       break;
     case ACTION.ADD_FIVE:
       console.log("doStuff: ACTION.ADD_FIVE")
-      temp = c
-      temp = temp + 5
-      c = temp
+      c += 5
       break;
     case ACTION.DOUBLE:
       console.log("doStuff: ACTION.DOUBLE")
