@@ -1,15 +1,3 @@
-## Running it
-
-No installation or build is required. Open `counter.html` directly in a
-browser:
-
-```
-open counter.html      # macOS
-xdg-open counter.html  # Linux
-```
-
-or serve the directory with any static file server and navigate to
-`counter.html`.
 
 ## Development notes
 
