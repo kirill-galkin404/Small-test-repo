@@ -3,10 +3,10 @@
 
 - All state (`c`, `cc`, `temp`) and behavior lives in the inline `<script>`
   block in `counter.html`.
-- Button click handling uses inline `onclick="doOperation(ACTION.X)"`
-  attributes on each button — there are no `addEventListener` calls and no
-  `data-action` attributes.
-- `doOperation(x)` is the single entry point for mutating state; every action
+- Button click handling uses a single delegated `addEventListener` call keyed
+  off each button's `data-action` attribute — there are no inline `onclick`
+  handlers.
+- `dispatch(x)` is the single entry point for mutating state; every action
   case falls through to a shared tail that increments `cc` and calls
   `render()`.
 

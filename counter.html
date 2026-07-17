@@ -1,22 +1,28 @@
-<div>
+<div id="counter">
   <h1 id="ttl">Counter</h1>
   <p id="d" style="font-size:40px;color:black;font-family:arial">0</p>
-  <button onclick="doOperation(ACTION.INCREMENT)" style="padding:10px;background:green;color:white">+</button>
-  <button onclick="doOperation(ACTION.DECREMENT)" style="padding:10px;background:red;color:white">-</button>
-  <button onclick="doOperation(ACTION.RESET)" style="padding:10px;background:gray;color:white">reset</button>
-  <button onclick="doOperation(ACTION.ADD_FOUR)">+5</button>
-  <button onclick="doOperation(ACTION.DOUBLE)">x2</button>
+  <button data-action="INCREMENT" style="padding:10px;background:green;color:white">+</button>
+  <button data-action="DECREMENT" style="padding:10px;background:red;color:white">-</button>
+  <button data-action="RESET" style="padding:10px;background:gray;color:white">reset</button>
+  <button data-action="ADD_FOUR">+5</button>
+  <button data-action="DOUBLE">x2</button>
 </div>
 
 <script>
-// Relies on this staying a classic (non-module) inline script: onclick
-// attributes need ACTION to be reachable from global scope.
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 var temp
 
-function doOperation(x){
+document.getElementById("counter").addEventListener("click", function(event){
+  var action = event.target.dataset.action
+  if(!action){
+    return;
+  }
+  dispatch(ACTION[action])
+});
+
+function dispatch(x){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
