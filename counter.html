@@ -11,6 +11,14 @@
 <script>
 // Relies on this staying a classic (non-module) inline script: onclick
 // attributes need ACTION to be reachable from global scope.
+// Invariant: each ACTION's numeric HTML button label must match the
+// arithmetic performed in its doOperation case below.
+// KNOWN LIVE VIOLATION (not yet fixed): the ADD_FOUR button (line 7) still
+// displays "+5" while `case ACTION.ADD_FOUR` computes `c = c + 4`. This
+// traces to commit d30144d, which renamed ACTION.ADD_FIVE -> ACTION.ADD_FOUR
+// and corrected the arithmetic from +5 to +4, but never updated the button's
+// visible text. Fixing the label is out of scope here; flagged as a
+// follow-up risk.
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
@@ -28,6 +36,10 @@ function doOperation(x){
       c = c - 1
       break;
     case ACTION.RESET:
+      // Intentional: cc is NOT reset here (see commit a3b7942, which
+      // resolved the "cc = cc no-op" as decision option (a): cc unchanged
+      // on reset). cc tracks the total count of dispatched/valid actions
+      // across all resets, not clicks-since-last-reset.
       console.log("doStuff: ACTION.RESET")
       c = 0
       break;
@@ -52,6 +64,11 @@ function doOperation(x){
 }
 
 function render(){
+  // Intentional: render() only WRITES c into #d's innerHTML; it must never
+  // read c back from the DOM. See commit d93094e, which made `c` the sole
+  // numeric authority for INCREMENT/DOUBLE and removed a string-concatenation
+  // bug caused by reading `c` back out of innerHTML (e.g.
+  // `c = document.getElementById("d").innerHTML + 1`).
   document.getElementById("d").innerHTML = c
   if(c > 10){
     document.getElementById("d").style.color = "red"
