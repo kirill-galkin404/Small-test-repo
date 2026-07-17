@@ -1,0 +1,61 @@
+const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
+var c = 0
+var cc = 0 // cc counts every dispatched action, shown as clicks in the title
+var temp
+
+document.getElementById("counter").addEventListener("click", function(event){
+  var action = event.target.dataset.action
+  if(!action){
+    return;
+  }
+  dispatch(ACTION[action])
+});
+
+function dispatch(x){
+  // main logic
+  switch(x){
+    case ACTION.INCREMENT:
+      console.log("doStuff: ACTION.INCREMENT")
+      c = c + 1
+      break;
+    case ACTION.DECREMENT:
+      console.log("doStuff: ACTION.DECREMENT")
+      c = c - 1
+      break;
+    case ACTION.RESET:
+      console.log("doStuff: ACTION.RESET")
+      c = 0
+      break;
+    case ACTION.ADD_FOUR:
+      console.log("doStuff: ACTION.ADD_FOUR")
+      temp = c
+      temp = temp + 4
+      c = temp
+      break;
+    case ACTION.DOUBLE:
+      console.log("doStuff: ACTION.DOUBLE")
+      c = c * 2
+      break;
+    default:
+      console.warn("doStuff: unrecognized action", x)
+      return;
+  }
+
+  cc++
+  console.log("doStuff: cc incremented to", cc)
+  render()
+}
+
+function render(){
+  document.getElementById("d").innerHTML = c
+  if(c > 10){
+    document.getElementById("d").style.color = "red"
+  } else if(c < 0){
+    document.getElementById("d").style.color = "blue"
+  } else {
+    document.getElementById("d").style.color = "black"
+  }
+
+  // update title
+  document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
+}
