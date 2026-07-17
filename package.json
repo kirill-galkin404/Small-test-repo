@@ -1,0 +1,12 @@
+{
+  "name": "small-test-repo",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test"
+  },
+  "devDependencies": {
+    "acorn": "^8.17.0"
+  }
+}
