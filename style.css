@@ -1,0 +1,23 @@
+#d {
+  font-size: 40px;
+  color: black;
+  font-family: arial;
+}
+
+button[data-action="INCREMENT"] {
+  padding: 10px;
+  background: green;
+  color: white;
+}
+
+button[data-action="DECREMENT"] {
+  padding: 10px;
+  background: red;
+  color: white;
+}
+
+button[data-action="RESET"] {
+  padding: 10px;
+  background: gray;
+  color: white;
+}
