@@ -1,23 +1,92 @@
+:root {
+  /* Colors */
+  --color-surface: #ffffff;
+  --color-primary: #2e7d32;
+  --color-secondary: #1565c0;
+  --color-destructive: #c62828;
+  --color-neutral: #616161;
+  --color-accent: #6a1b9a;
+  --color-text: #212121;
+  --color-on-action: #ffffff;
+
+  /* #d display state colors: reserved for a future counter.js change to
+     read these instead of its current hardcoded style.color literals.
+     Not consumed by counter.js today except --color-state-normal, which
+     only coincidentally matches the JS-set inline color at initial load. */
+  --color-state-high: #d32f2f;
+  --color-state-low: #1976d2;
+  --color-state-normal: #000000;
+
+  /* Spacing scale */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* Transitions */
+  --transition-fast: 100ms ease;
+  --transition-base: 200ms ease;
+}
+
 #d {
   font-size: 40px;
-  color: black;
+  color: var(--color-state-normal);
   font-family: arial;
 }
 
+#counter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-lg);
+  max-width: 320px;
+  margin: var(--space-lg) auto;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 var(--space-xs) var(--space-md) rgba(0, 0, 0, 0.15);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+#counter button {
+  padding: var(--space-sm) var(--space-md);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-weight: bold;
+  cursor: pointer;
+  color: var(--color-on-action);
+  transition: filter var(--transition-fast), transform var(--transition-fast), background var(--transition-base);
+}
+
+#counter button:hover {
+  filter: brightness(1.1);
+}
+
+#counter button:active {
+  transform: scale(0.96);
+}
+
 button[data-action="INCREMENT"] {
-  padding: 10px;
-  background: green;
-  color: white;
+  background: var(--color-primary);
 }
 
 button[data-action="DECREMENT"] {
-  padding: 10px;
-  background: red;
-  color: white;
+  background: var(--color-destructive);
 }
 
 button[data-action="RESET"] {
-  padding: 10px;
-  background: gray;
-  color: white;
+  background: var(--color-neutral);
+}
+
+button[data-action="ADD_FOUR"] {
+  background: var(--color-secondary);
+}
+
+button[data-action="DOUBLE"] {
+  background: var(--color-accent);
 }
