@@ -9,7 +9,10 @@
   --color-text: #212121;
   --color-on-action: #ffffff;
 
-  /* #d display state colors (consumed by counter.js render()) */
+  /* #d display state colors: reserved for a future counter.js change to
+     read these instead of its current hardcoded style.color literals.
+     Not consumed by counter.js today except --color-state-normal, which
+     only coincidentally matches the JS-set inline color at initial load. */
   --color-state-high: #d32f2f;
   --color-state-low: #1976d2;
   --color-state-normal: #000000;
