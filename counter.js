@@ -15,34 +15,34 @@ function dispatch(x){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
-      console.log("doStuff: ACTION.INCREMENT")
+      console.log("dispatch: ACTION.INCREMENT")
       c = c + 1
       break;
     case ACTION.DECREMENT:
-      console.log("doStuff: ACTION.DECREMENT")
+      console.log("dispatch: ACTION.DECREMENT")
       c = c - 1
       break;
     case ACTION.RESET:
-      console.log("doStuff: ACTION.RESET")
+      console.log("dispatch: ACTION.RESET")
       c = 0
       break;
     case ACTION.ADD_FOUR:
-      console.log("doStuff: ACTION.ADD_FOUR")
+      console.log("dispatch: ACTION.ADD_FOUR")
       temp = c
       temp = temp + 4
       c = temp
       break;
     case ACTION.DOUBLE:
-      console.log("doStuff: ACTION.DOUBLE")
+      console.log("dispatch: ACTION.DOUBLE")
       c = c * 2
       break;
     default:
-      console.warn("doStuff: unrecognized action", x)
+      console.warn("dispatch: unrecognized action", x)
       return;
   }
 
   cc++
-  console.log("doStuff: cc incremented to", cc)
+  console.log("dispatch: cc incremented to", cc)
   render()
 }
 
