@@ -1,7 +1,6 @@
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
-var temp
 
 document.getElementById("counter").addEventListener("click", function(event){
   var action = event.target.dataset.action
@@ -28,9 +27,7 @@ function dispatch(x){
       break;
     case ACTION.ADD_FOUR:
       console.log("dispatch: ACTION.ADD_FOUR")
-      temp = c
-      temp = temp + 4
-      c = temp
+      c = c + 4
       break;
     case ACTION.DOUBLE:
       console.log("dispatch: ACTION.DOUBLE")
