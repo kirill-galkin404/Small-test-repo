@@ -2,18 +2,61 @@
 <html>
   <head>
     <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
   </head>
   <body>
-    <div id="counter">
-      <h1 id="ttl">Counter</h1>
-      <p id="d">0</p>
-      <button data-action="INCREMENT">+</button>
-      <button data-action="DECREMENT">-</button>
-      <button data-action="RESET">reset</button>
-      <button data-action="ADD_FOUR">+4</button>
-      <button data-action="DOUBLE">x2</button>
-    </div>
+    <div id="counter"></div>
 
-    <script src="counter.js"></script>
+    <script type="text/babel">
+      const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
+
+      function reducer(state, action) {
+        switch (action) {
+          case ACTION.INCREMENT:
+            return { c: state.c + 1, cc: state.cc + 1 };
+          case ACTION.DECREMENT:
+            return { c: state.c - 1, cc: state.cc + 1 };
+          case ACTION.RESET:
+            return { c: 0, cc: state.cc + 1 };
+          case ACTION.ADD_FOUR:
+            return { c: state.c + 4, cc: state.cc + 1 };
+          case ACTION.DOUBLE:
+            return { c: state.c * 2, cc: state.cc + 1 };
+          default:
+            return state;
+        }
+      }
+
+      function Counter() {
+        const [state, dispatch] = React.useReducer(reducer, { c: 0, cc: 0 });
+        const { c, cc } = state;
+
+        let color;
+        if (c > 10) {
+          color = "red";
+        } else if (c < 0) {
+          color = "blue";
+        } else {
+          color = "black";
+        }
+
+        return (
+          <React.Fragment>
+            <h1 id="ttl">{"Counter (" + cc + " clicks)"}</h1>
+            <p id="d" style={{ color: color }}>{c}</p>
+            <button data-action="INCREMENT" onClick={() => dispatch(ACTION.INCREMENT)}>+</button>
+            <button data-action="DECREMENT" onClick={() => dispatch(ACTION.DECREMENT)}>-</button>
+            <button data-action="RESET" onClick={() => dispatch(ACTION.RESET)}>reset</button>
+            <button data-action="ADD_FOUR" onClick={() => dispatch(ACTION.ADD_FOUR)}>+4</button>
+            <button data-action="DOUBLE" onClick={() => dispatch(ACTION.DOUBLE)}>x2</button>
+          </React.Fragment>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById("counter")).render(<Counter />);
+    </script>
   </body>
 </html>
+</content>

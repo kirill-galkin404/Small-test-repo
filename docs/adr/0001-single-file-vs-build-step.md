@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Accepted (amended)
 
 ## Context
 
@@ -84,3 +84,49 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (Fork A+ — CDN-delivered React exception)
+
+`counter.js`/`counter.html` have been rewritten to use React with
+`useReducer` instead of hand-rolled `dispatch`/`render` functions. This is
+recorded as **Fork A+**, a narrow, explicitly-scoped exception to Fork A
+rather than a reversal of the Fork A decision or an adoption of Fork B:
+
+- React and ReactDOM are loaded via `<script src>` tags from a CDN
+  (unpkg/cdnjs) — the same "no build step, no bundler, no `package.json`"
+  constraint from Fork A still holds, since nothing is installed or bundled
+  locally.
+- Babel standalone is loaded the same way (CDN `<script src>`) and performs
+  an in-browser JSX/JS transform at page-load time.
+- Component code lives inline in `counter.html`, inside a single
+  `<script type="text/babel">` block, in place of the former
+  `counter.js`/`<script src="counter.js">` pairing.
+
+This exception is accepted **only** with the following three hard,
+non-negotiable costs on record — this is not a free upgrade, and any of
+these becoming unacceptable in this widget's deployment context is grounds
+to abandon Fork A+ in favor of Fork B or a new ADR, not to silently work
+around them:
+
+1. **Babel weight.** Babel standalone's in-browser transform adds roughly
+   1 MB of script weight to the page. This is unsuitable for any
+   production or performance-sensitive context — it is acceptable here only
+   because this remains a small demo/utility widget, not a general
+   precedent for other pages.
+2. **CSP / `unsafe-eval` incompatibility.** The in-browser Babel transform
+   requires `unsafe-eval` and/or `unsafe-inline` script execution. Any
+   deployment context that has, or may in the future adopt, a strict
+   Content-Security-Policy will have this widget **silently stop working**
+   (no visible error, no console-surfaced failure a typical user would see)
+   under that policy. If such a CSP is in force or is ever planned, Fork A+
+   is disallowed for that context — Fork B (a real build step, precompiled
+   output) or a new ADR is required instead.
+3. **File-collapse regression.** Folding `counter.js` into an inline
+   `<script type="text/babel">` block inside `counter.html` collapses two
+   files back into one. This is a structural regression against the
+   file-separation that existed before this amendment, and is recorded here
+   as an accepted cost of Fork A+, not an incidental side effect.
+
+This amendment does not change the Fork A decision for any future
+non-React work on this file: Fork B (bundler, ES modules, `package.json`)
+remains rejected outside of this narrow, named exception.
