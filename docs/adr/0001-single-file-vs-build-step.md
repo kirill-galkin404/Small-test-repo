@@ -101,6 +101,11 @@ rather than a reversal of the Fork A decision or an adoption of Fork B:
 - Component code lives inline in `counter.html`, inside a single
   `<script type="text/babel">` block, in place of the former
   `counter.js`/`<script src="counter.js">` pairing.
+- All three CDN `<script src>` tags are pinned to a major version
+  (`react@18`, `react-dom@18`, `@babel/standalone@8`) rather than left
+  unversioned. None carry a Subresource Integrity (SRI) hash — this is a
+  known, accepted gap, not an oversight, but major-version pinning at least
+  bounds which releases can be served without requiring SRI.
 
 This exception is accepted **only** with the following three hard,
 non-negotiable costs on record — this is not a free upgrade, and any of
