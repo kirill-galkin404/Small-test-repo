@@ -84,3 +84,12 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (testability scope narrowed by ADR 0002)
+
+[docs/adr/0002-static-test-harness-page.md](0002-static-test-harness-page.md)
+supersedes this ADR **only on testability**: it adds a second static,
+dependency-free HTML page (`counter.test.html`) as a manual-but-repeatable
+assertion harness, loading `counter.js` via a classic `<script>` tag. It
+does not reopen or change the Decision above — `counter.html` itself stays
+single-file, with no build step, bundler, or module system.

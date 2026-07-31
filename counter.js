@@ -2,10 +2,28 @@ const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
+;(function checkActionWiring(){
+  var mismatches = []
+  var triggers = document.querySelectorAll("#counter [data-action]")
+  for(var i = 0; i < triggers.length; i++){
+    var value = triggers[i].dataset.action
+    if(!(value in ACTION)){
+      mismatches.push("<" + triggers[i].tagName.toLowerCase() + "> data-action=\"" + value + "\"")
+    }
+  }
+  if(mismatches.length){
+    console.error("Counter: data-action/ACTION mismatch for " + mismatches.length + " element(s): " + mismatches.join(", ") + " — check counter.html's data-action attributes against the ACTION table in counter.js")
+  }
+})();
+
 document.getElementById("counter").addEventListener("click", function(event){
-  var action = event.target.dataset.action
-  if(!action){
+  var trigger = event.target.closest("[data-action]")
+  if(!trigger || !event.currentTarget.contains(trigger)){
     return;
+  }
+  var action = trigger.dataset.action
+  if(!action){
+    throw new Error("Counter: trigger element has no usable data-action (<" + trigger.tagName.toLowerCase() + (trigger.className ? " class=\"" + trigger.className + "\"" : "") + ">)")
   }
   dispatch(ACTION[action])
 });
@@ -34,8 +52,7 @@ function dispatch(x){
       c = c * 2
       break;
     default:
-      console.warn("dispatch: unrecognized action", x)
-      return;
+      throw new Error("dispatch(): unknown ACTION code " + x + " — check the ACTION table against the data-action attributes in counter.html")
   }
 
   cc++

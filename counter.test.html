@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>counter.js test harness</title>
+    <style>
+      body { font-family: sans-serif; margin: 2em; }
+      #fixture { border: 1px solid #ccc; padding: 1em; max-width: 20em; }
+      #results { list-style: none; padding: 0; font-family: monospace; }
+      #results li { padding: 0.25em 0; border-bottom: 1px solid #eee; }
+      #results li.pass { color: #0a0; }
+      #results li.fail { color: #c00; white-space: pre-wrap; }
+      #summary { font-weight: bold; margin-top: 1em; }
+    </style>
+  </head>
+  <body>
+    <h1>counter.test.html</h1>
+    <p>
+      Manual-but-repeatable assertion suite for <code>counter.js</code>, per
+      <a href="docs/adr/0002-static-test-harness-page.md">ADR 0002</a>.
+      Open this file directly in a browser; every case below should show
+      <strong>PASS</strong>. Re-run after any change to <code>counter.js</code>.
+    </p>
+
+    <h2>Fixture (mirrors counter.html)</h2>
+    <div id="fixture">
+      <div id="counter">
+        <h1 id="ttl">Counter</h1>
+        <p id="d">0</p>
+        <button data-action="INCREMENT">+</button>
+        <button data-action="DECREMENT">-</button>
+        <button data-action="RESET">reset</button>
+        <button data-action="ADD_FOUR">+4</button>
+        <button data-action="DOUBLE">x2</button>
+      </div>
+    </div>
+
+    <h2>Results</h2>
+    <ul id="results"></ul>
+    <div id="summary"></div>
+
+    <!-- Load the real, unmodified counter.js via a classic script tag (ADR 0002 Fork A). -->
+    <script src="counter.js"></script>
+    <script>
+      var resultsEl = document.getElementById("results")
+      var passCount = 0
+      var failCount = 0
+
+      function record(name, ok, detail){
+        var li = document.createElement("li")
+        li.className = ok ? "pass" : "fail"
+        li.textContent = (ok ? "PASS — " : "FAIL — ") + name + (detail ? " (" + detail + ")" : "")
+        resultsEl.appendChild(li)
+        if(ok){ passCount++ } else { failCount++ }
+      }
+
+      function test(name, fn){
+        try {
+          fn()
+          record(name, true)
+        } catch(e){
+          record(name, false, e.message)
+        }
+      }
+
+      function assertEqual(actual, expected, what){
+        if(actual !== expected){
+          throw new Error(what + ": expected " + JSON.stringify(expected) + " but got " + JSON.stringify(actual))
+        }
+      }
+
+      function resetState(){
+        c = 0
+        cc = 0
+        render()
+      }
+
+      function colorOf(){
+        return document.getElementById("d").style.color
+      }
+
+      function textOf(){
+        return document.getElementById("d").innerHTML
+      }
+
+      function titleOf(){
+        return document.getElementById("ttl").innerHTML
+      }
+
+      function clickAction(action){
+        var btn = document.querySelector('#counter [data-action="' + action + '"]')
+        btn.click()
+      }
+
+      // Runs fn() while capturing the first uncaught error dispatched to
+      // window (click-handler throws surface here, not via try/catch around
+      // .click(), since DOM event listener exceptions don't propagate back
+      // into the caller's synchronous call stack).
+      function captureUncaughtError(fn){
+        var caught = null
+        function onError(event){
+          caught = event.error || new Error(event.message)
+          event.preventDefault()
+        }
+        window.addEventListener("error", onError)
+        try {
+          fn()
+        } finally {
+          window.removeEventListener("error", onError)
+        }
+        return caught
+      }
+
+      function withTemporaryTrigger(attrs, fn){
+        var btn = document.createElement("button")
+        for(var key in attrs){
+          btn.setAttribute(key, attrs[key])
+        }
+        document.getElementById("counter").appendChild(btn)
+        try {
+          fn(btn)
+        } finally {
+          btn.remove()
+        }
+      }
+
+      // --- All five actions from known states ---
+
+      test("INCREMENT: 0 -> 1", function(){
+        resetState()
+        clickAction("INCREMENT")
+        assertEqual(c, 1, "c")
+        assertEqual(cc, 1, "cc")
+        assertEqual(textOf(), "1", "#d text")
+        assertEqual(colorOf(), "black", "#d color")
+        assertEqual(titleOf(), "Counter (1 clicks)", "#ttl text")
+      })
+
+      test("DECREMENT: 3 -> 2", function(){
+        resetState()
+        c = 3
+        clickAction("DECREMENT")
+        assertEqual(c, 2, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      test("RESET: 7 -> 0", function(){
+        resetState()
+        c = 7
+        clickAction("RESET")
+        assertEqual(c, 0, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      test("ADD_FOUR: 1 -> 5", function(){
+        resetState()
+        c = 1
+        clickAction("ADD_FOUR")
+        assertEqual(c, 5, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      test("DOUBLE: 3 -> 6", function(){
+        resetState()
+        c = 3
+        clickAction("DOUBLE")
+        assertEqual(c, 6, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      // --- c>10 red boundary ---
+
+      test("8 -> ADD_FOUR -> 12 (red)", function(){
+        resetState()
+        c = 8
+        clickAction("ADD_FOUR")
+        assertEqual(c, 12, "c")
+        assertEqual(colorOf(), "red", "#d color")
+      })
+
+      test("5 -> DOUBLE -> 10 (still black, boundary not exceeded)", function(){
+        resetState()
+        c = 5
+        clickAction("DOUBLE")
+        assertEqual(c, 10, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      test("6 -> DOUBLE -> 12 (red)", function(){
+        resetState()
+        c = 6
+        clickAction("DOUBLE")
+        assertEqual(c, 12, "c")
+        assertEqual(colorOf(), "red", "#d color")
+      })
+
+      // --- c<0 blue boundary ---
+
+      test("0 -> DECREMENT -> -1 (blue)", function(){
+        resetState()
+        clickAction("DECREMENT")
+        assertEqual(c, -1, "c")
+        assertEqual(colorOf(), "blue", "#d color")
+      })
+
+      test("DOUBLE immediately after DECREMENT: -1 -> -2 (still blue)", function(){
+        resetState()
+        clickAction("DECREMENT")
+        clickAction("DOUBLE")
+        assertEqual(c, -2, "c")
+        assertEqual(colorOf(), "blue", "#d color")
+      })
+
+      // --- RESET from red back to 0/black ---
+
+      test("RESET from red: 14 -> 0 (black)", function(){
+        resetState()
+        c = 14
+        render()
+        assertEqual(colorOf(), "red", "precondition: #d color")
+        clickAction("RESET")
+        assertEqual(c, 0, "c")
+        assertEqual(colorOf(), "black", "#d color")
+      })
+
+      // --- cc-driven title across N dispatched actions ---
+
+      test("cc increments once per dispatched action, title tracks cc", function(){
+        resetState()
+        clickAction("INCREMENT")
+        clickAction("INCREMENT")
+        clickAction("ADD_FOUR")
+        clickAction("DOUBLE")
+        clickAction("RESET")
+        assertEqual(cc, 5, "cc")
+        assertEqual(titleOf(), "Counter (5 clicks)", "#ttl text")
+      })
+
+      // --- Guard path (Phase 4): trigger element with no usable data-action ---
+
+      // Note: when counter.js is loaded via <script src> from a file:// URL,
+      // Chromium mutes the message/error fields on the window "error" event
+      // for exceptions thrown inside it (reported as generic "Script
+      // error."), even though the same exception's real message/stack is
+      // fully visible in the DevTools console (verified manually — see
+      // README.md). So these two guard tests assert that an error was
+      // raised and that state stayed unchanged, without depending on the
+      // (possibly muted) message text; the exact message wording is
+      // exercised unmuted by the direct dispatch(999) test below, since a
+      // synchronous try/catch around a same-stack function call is never
+      // muted.
+      test("guard: click on trigger-like element with blank data-action raises and leaves state unchanged", function(){
+        resetState()
+        var before = { c: c, cc: cc }
+        var error = null
+        withTemporaryTrigger({ "data-action": "", "class": "broken-trigger" }, function(btn){
+          error = captureUncaughtError(function(){ btn.click() })
+        })
+        if(!error){
+          throw new Error("expected an uncaught error, but none was raised")
+        }
+        assertEqual(c, before.c, "c")
+        assertEqual(cc, before.cc, "cc")
+      })
+
+      test("guard: click on genuine non-trigger element (#ttl) stays silent", function(){
+        resetState()
+        var before = { c: c, cc: cc }
+        var error = captureUncaughtError(function(){ document.getElementById("ttl").click() })
+        if(error){
+          throw new Error("expected no error, but got: " + error.message)
+        }
+        assertEqual(c, before.c, "c")
+        assertEqual(cc, before.cc, "cc")
+      })
+
+      // --- Guard path (Phase 5): unrecognized ACTION code via an unknown data-action ---
+
+      test("guard: click on trigger with unknown data-action raises via dispatch() and leaves state unchanged", function(){
+        resetState()
+        var before = { c: c, cc: cc }
+        var error = null
+        withTemporaryTrigger({ "data-action": "NOT_A_REAL_ACTION" }, function(btn){
+          error = captureUncaughtError(function(){ btn.click() })
+        })
+        if(!error){
+          throw new Error("expected an uncaught error, but none was raised")
+        }
+        assertEqual(c, before.c, "c")
+        assertEqual(cc, before.cc, "cc")
+      })
+
+      test("guard: dispatch() called directly with an out-of-range code throws and leaves state unchanged", function(){
+        resetState()
+        var before = { c: c, cc: cc }
+        var threw = false
+        try {
+          dispatch(999)
+        } catch(e){
+          threw = true
+          if(e.message.indexOf("999") === -1){
+            throw new Error("error message did not mention the offending code: " + e.message)
+          }
+        }
+        if(!threw){
+          throw new Error("expected dispatch(999) to throw")
+        }
+        assertEqual(c, before.c, "c")
+        assertEqual(cc, before.cc, "cc")
+      })
+
+      resetState()
+
+      var summaryEl = document.getElementById("summary")
+      summaryEl.textContent = passCount + " passed, " + failCount + " failed"
+      summaryEl.style.color = failCount ? "#c00" : "#0a0"
+    </script>
+  </body>
+</html>
