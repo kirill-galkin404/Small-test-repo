@@ -17,8 +17,8 @@ The click→dispatch→render path fails loudly instead of silently:
 - The delegated click listener throws an `Error` naming the offending
   element and attribute (e.g. `Counter: trigger element has no usable
   data-action (<button class="…">)`) if it sees a configured trigger
-  element (matched by `[data-action]`) whose `data-action` is missing or
-  blank. It still silently ignores clicks on genuine non-trigger children
+  element (matched by `[data-action]`) whose `data-action` is blank. It
+  still silently ignores clicks on genuine non-trigger children
   of `#counter`, such as `#ttl` and `#d`.
 - `dispatch(x)` throws an `Error` naming the offending code (e.g.
   `dispatch(): unknown ACTION code 999 — check the ACTION table against

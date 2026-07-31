@@ -7,7 +7,7 @@ var cc = 0 // cc counts every dispatched action, shown as clicks in the title
   var triggers = document.querySelectorAll("#counter [data-action]")
   for(var i = 0; i < triggers.length; i++){
     var value = triggers[i].dataset.action
-    if(!(value in ACTION)){
+    if(!Object.prototype.hasOwnProperty.call(ACTION, value)){
       mismatches.push("<" + triggers[i].tagName.toLowerCase() + "> data-action=\"" + value + "\"")
     }
   }
