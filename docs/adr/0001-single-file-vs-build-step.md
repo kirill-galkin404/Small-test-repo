@@ -23,8 +23,8 @@ Accepted
 - The entire state-change path is a single, unconditional cycle: a click
   invokes `dispatch`, whose `switch` statement mutates state for the
   matched `ACTION` case (or returns early on an unrecognized action), then
-  every matched case falls through to a shared tail that increments the `cc`
-  click counter and calls `render()` to update the DOM.
+  every matched case falls through to a shared tail that increments
+  `state.clicks` and calls `render()` to update the DOM.
 
 Before any refactor of this file proceeds, we need to record which of the two
 architectural directions below has been chosen, since they are mutually
