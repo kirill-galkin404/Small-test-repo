@@ -21,3 +21,15 @@ button[data-action="RESET"] {
   background: gray;
   color: white;
 }
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: purple;
+  color: white;
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: orange;
+  color: white;
+}
