@@ -84,3 +84,31 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment 2 — retraction of the "no external JS/CSS" decision
+
+Commit `143566b` (PR #24) externalised the script and stylesheet: `counter.js`
+is now loaded via `<script src="counter.js">` and styling via
+`<link rel="stylesheet" href="style.css">`, rather than living inline in
+`counter.html`. This directly contradicts the Fork A Decision above, which
+was written for — and explicitly required — "no external JS or CSS
+dependencies" and an inline `<script>` block. That part of the Fork A
+Decision and its first two Consequences bullets are hereby **retracted**;
+the codebase has already diverged from them since `143566b`, and this ADR
+should not go on asserting a constraint the code no longer honors.
+
+The remaining sub-constraints of Fork A are **reaffirmed** and remain in
+force, since the code still honors them today (confirmed: no `package.json`,
+no bundler, no ES modules anywhere in the repository):
+
+- No build step and no bundler.
+- No module system: `counter.js` remains a classic (non-module) script, and
+  `ACTION` / `dispatch` (or their replacements) must remain reachable from
+  wherever click handling is wired, without relying on a module loader.
+- No `package.json`.
+
+`Status` remains **Accepted**, re-scoped to this narrower "no build step / no
+module system / no `package.json`" decision. Splitting `counter.js` and
+`style.css` into their own files is compatible with this narrower scope and
+is not itself grounds to revisit Fork A vs. Fork B; that revisit is still
+reserved for a future ADR, as noted above.
