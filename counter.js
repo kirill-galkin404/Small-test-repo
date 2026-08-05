@@ -31,6 +31,9 @@ TRANSFORMERS[ACTION.RESET] = function(value){ return 0 }
 TRANSFORMERS[ACTION.ADD_FOUR] = function(value){ return value + 4 }
 TRANSFORMERS[ACTION.DOUBLE] = function(value){ return value * 2 }
 
+var ACTION_NAMES = {}
+Object.keys(ACTION).forEach(function(name){ ACTION_NAMES[ACTION[name]] = name })
+
 document.getElementById("counter").addEventListener("click", function(event){
   var action = event.target.dataset.action
   if(!action){
@@ -46,11 +49,15 @@ function dispatch(x){
     return;
   }
 
+  console.log("dispatch: ACTION." + ACTION_NAMES[x])
+
   var prevValue = state.value
   var prevDispatchCount = state.dispatchCount
 
   state.value = transform(state.value)
   state.dispatchCount++
+
+  console.log("dispatch: dispatchCount incremented to", state.dispatchCount)
 
   console.assert(state.dispatchCount === prevDispatchCount + 1,
     "dispatch invariant violated: dispatchCount must increment by exactly 1 per matched dispatch")
