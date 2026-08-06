@@ -84,3 +84,33 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-08-06)
+
+Source may now be authored in TypeScript (`src/counter.ts`) and compiled
+ahead of time by `tsc` alone. This is an authoring-time exception only: the
+deployed/loaded artefact remains a single, dependency-free classic script
+(`counter.js`) with no bundler and no module loader, so `counter.html`
+continues to load it exactly as before via `<script src="counter.js">`.
+`tsc` is invoked directly (no `webpack`, `esbuild`, `Vite`, or similar) and
+its only devDependency is `typescript` itself, preserving Fork A's
+zero-install portability rationale — cloning the repo and opening
+`counter.html` directly still works with no build step, since the compiled
+`counter.js` is committed to git alongside its `src/counter.ts` source.
+`ACTION`, `dispatch`, and `render` (now written in TypeScript but compiled
+to the same plain functions/consts) must remain reachable from the
+delegated click handler without a module loader, exactly as Fork A already
+required.
+
+The emit strategy chosen is a single compiled unit, non-module script
+(`module: "none"` in `tsconfig.json`): `src/counter.ts` compiles to exactly
+one `counter.js`, the same file `dispatch`, `render`, and the `#counter`
+click listener are declared in. The alternative of wrapping the compiled
+output in an IIFE and attaching `ACTION`/`dispatch` to `window` explicitly
+was not needed, because `ACTION`, `dispatch`, `render`, and the click
+listener all compile from the one source file into the one script — there
+is never a cross-scope global lookup between separately-compiled units for
+the click handler to depend on.
+
+This amendment does not change `Status: Accepted` or the Fork A decision
+itself.
