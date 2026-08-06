@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "module": "none",
+    "outFile": "counter.js",
+    "strict": true,
+    "target": "ES2017",
+    "ignoreDeprecations": "6.0"
+  },
+  "files": ["counter.ts"]
+}

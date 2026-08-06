@@ -84,3 +84,32 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-08-06)
+
+The Context section's claim that the page "has no external JS or CSS
+dependencies" is stale: `counter.html` loads `counter.js` via a classic
+`<script src="counter.js">` tag and `style.css` via a `<link>` tag — both are
+external files, not inline blocks. This has been the case since before the
+TypeScript rewrite recorded in the amendment below; this amendment only
+corrects the Context's description to match. It does not change
+`Status: Accepted` or the Fork A Decision section, and it does not revisit
+the no-module-system, no-bundler, no-`package.json` constraint — `counter.js`
+remains a plain classic script with no module loader involved at runtime.
+
+## Amendment (2026-08-06, TypeScript compile step)
+
+`counter.js` is now generated: it is compiled from a new `counter.ts` source
+via `tsc -p tsconfig.json`, invoked as a bare dev-time command (no
+`package.json`, no npm script, no dependencies added). `tsc` is a dev-time-only
+transpiler/type-checker — it is never shipped to the browser or run there;
+only its compiled output, `counter.js`, is committed and served. The
+`tsconfig.json` mandates `"module": "none"` plus `"outFile": "counter.js"`,
+so the emitted `counter.js` stays a classic, global-scope script with no
+bundler and no ES module loader introduced, keeping `ACTION` and `dispatch`
+reachable from the delegated `#counter` click listener without a module
+loader, per this ADR's existing Consequences section. `tsconfig.json` is
+dev-tooling configuration, not a runtime dependency manifest — no runtime
+`package.json` is added, so the Fork A "no `package.json`" constraint holds
+for the shipped artifact. This amendment does not change `Status: Accepted`
+or the Fork A Decision section.
