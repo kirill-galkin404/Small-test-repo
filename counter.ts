@@ -10,7 +10,6 @@
 // "module": "none" + "outFile", which requires a module-syntax-free source
 // to emit a flat, non-module counter.js).
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
-type Action = (typeof ACTION)[keyof typeof ACTION];
 
 let c: number = 0;
 let cc: number = 0; // cc counts every dispatched action, shown as clicks in the title

@@ -90,12 +90,15 @@ change `Status: Accepted` or the Fork A decision itself.
 The Context section's claim that the page "has no external JS or CSS
 dependencies" is stale: `counter.html` loads `counter.js` via a classic
 `<script src="counter.js">` tag and `style.css` via a `<link>` tag — both are
-external files, not inline blocks. This has been the case since before the
-TypeScript rewrite recorded in the amendment below; this amendment only
-corrects the Context's description to match. It does not change
-`Status: Accepted` or the Fork A Decision section, and it does not revisit
-the no-module-system, no-bundler, no-`package.json` constraint — `counter.js`
-remains a plain classic script with no module loader involved at runtime.
+external files, not inline blocks. Likewise, the Context's description of
+the `<script>` block as "inline" is stale for the same reason: there is no
+inline script content in `counter.html`, only the `src`-referenced tag.
+This has been the case since before the TypeScript rewrite recorded in the
+amendment below; this amendment only corrects the Context's description to
+match. It does not change `Status: Accepted` or the Fork A Decision section,
+and it does not revisit the no-module-system, no-bundler, no-`package.json`
+constraint — `counter.js` remains a plain classic script with no module
+loader involved at runtime.
 
 ## Amendment (2026-08-06, TypeScript compile step)
 
