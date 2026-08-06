@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>counter.js test harness</title>
+    <style>
+      body { font-family: arial; }
+      .pass { color: green; }
+      .fail { color: red; font-weight: bold; }
+    </style>
+  </head>
+  <body>
+    <h1>counter.js test harness</h1>
+    <div id="results"></div>
+
+    <!-- Real DOM targets for dispatch()/render() to read and write, same ids as counter.html -->
+    <div id="counter">
+      <h1 id="ttl">Counter</h1>
+      <p id="d">0</p>
+      <button data-action="INCREMENT">+</button>
+      <button data-action="DECREMENT">-</button>
+      <button data-action="RESET">reset</button>
+      <button data-action="ADD_FOUR">+4</button>
+      <button data-action="DOUBLE">x2</button>
+    </div>
+
+    <script src="counter.js"></script>
+    <script>
+      var results = document.getElementById("results");
+      var failCount = 0;
+
+      function assertEqual(name, actual, expected) {
+        var pass = actual === expected;
+        if (!pass) {
+          failCount++;
+          console.error("FAIL: " + name + " -- expected " + JSON.stringify(expected) + " but got " + JSON.stringify(actual));
+        }
+        var line = document.createElement("div");
+        line.className = pass ? "pass" : "fail";
+        line.textContent = (pass ? "PASS: " : "FAIL: ") + name + " (expected " + JSON.stringify(expected) + ", got " + JSON.stringify(actual) + ")";
+        results.appendChild(line);
+      }
+
+      function colorOf() {
+        return document.getElementById("d").style.color;
+      }
+
+      // --- Each of the five actions' effect on c, and cc increments by exactly 1 per recognized action ---
+
+      dispatch(ACTION.RESET);
+      var beforeCc = getState().cc;
+      dispatch(ACTION.INCREMENT);
+      assertEqual("INCREMENT: c", getState().c, 1);
+      assertEqual("INCREMENT: cc increments by 1", getState().cc, beforeCc + 1);
+
+      dispatch(ACTION.RESET);
+      beforeCc = getState().cc;
+      dispatch(ACTION.DECREMENT);
+      assertEqual("DECREMENT: c", getState().c, -1);
+      assertEqual("DECREMENT: cc increments by 1", getState().cc, beforeCc + 1);
+
+      dispatch(ACTION.ADD_FOUR);
+      beforeCc = getState().cc;
+      dispatch(ACTION.RESET);
+      assertEqual("RESET: c", getState().c, 0);
+      assertEqual("RESET: cc increments by 1", getState().cc, beforeCc + 1);
+
+      dispatch(ACTION.RESET);
+      beforeCc = getState().cc;
+      dispatch(ACTION.ADD_FOUR);
+      assertEqual("ADD_FOUR: c", getState().c, 4);
+      assertEqual("ADD_FOUR: cc increments by 1", getState().cc, beforeCc + 1);
+
+      dispatch(ACTION.RESET);
+      dispatch(ACTION.ADD_FOUR);
+      beforeCc = getState().cc;
+      dispatch(ACTION.DOUBLE);
+      assertEqual("DOUBLE: c", getState().c, 8);
+      assertEqual("DOUBLE: cc increments by 1", getState().cc, beforeCc + 1);
+
+      // --- #ttl text ---
+
+      dispatch(ACTION.RESET);
+      assertEqual("#ttl text after RESET", document.getElementById("ttl").innerHTML, "Counter (" + getState().cc + " clicks)");
+
+      // --- #d colour at threshold boundaries and their neighbours ---
+
+      dispatch(ACTION.RESET);
+      for (var i = 0; i < 11; i++) { dispatch(ACTION.INCREMENT); }
+      assertEqual("colour red at c=11", getState().c, 11);
+      assertEqual("colour is red at c=11", colorOf(), "red");
+
+      dispatch(ACTION.RESET);
+      dispatch(ACTION.DECREMENT);
+      assertEqual("colour blue at c=-1", getState().c, -1);
+      assertEqual("colour is blue at c=-1", colorOf(), "blue");
+
+      dispatch(ACTION.RESET);
+      assertEqual("colour black at c=0", getState().c, 0);
+      assertEqual("colour is black at c=0", colorOf(), "black");
+
+      dispatch(ACTION.RESET);
+      for (var j = 0; j < 10; j++) { dispatch(ACTION.INCREMENT); }
+      assertEqual("colour black at c=10 boundary", getState().c, 10);
+      assertEqual("colour is black at c=10", colorOf(), "black");
+
+      // --- unrecognized-action no-op ---
+
+      dispatch(ACTION.RESET);
+      var beforeState = getState();
+      dispatch(999);
+      assertEqual("unrecognized action leaves c unchanged", getState().c, beforeState.c);
+      assertEqual("unrecognized action leaves cc unchanged", getState().cc, beforeState.cc);
+
+      // --- delegated-listener no-op: click on #counter itself, not a data-action button ---
+
+      dispatch(ACTION.RESET);
+      beforeState = getState();
+      document.getElementById("counter").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+      assertEqual("click on #counter itself leaves c unchanged", getState().c, beforeState.c);
+      assertEqual("click on #counter itself leaves cc unchanged", getState().cc, beforeState.cc);
+
+      // --- summary ---
+
+      var summary = document.createElement("div");
+      summary.textContent = failCount === 0 ? "ALL ASSERTIONS PASSED" : (failCount + " ASSERTION(S) FAILED");
+      summary.className = failCount === 0 ? "pass" : "fail";
+      results.insertBefore(summary, results.firstChild);
+    </script>
+  </body>
+</html>

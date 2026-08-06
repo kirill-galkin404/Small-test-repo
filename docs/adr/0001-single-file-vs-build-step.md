@@ -84,3 +84,27 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-07-28)
+
+Fork A still holds: there is still no bundler and no runtime module
+system, and `ACTION`/`dispatch` remain reachable as globals from the
+delegated click handler. What has changed is the authoring source:
+`counter.ts` is now the source of truth for the widget's logic, and
+`counter.js` is generated from it by `tsc` using `module: "none"` and
+`outFile` (see `tsconfig.json`), emitting the same classic, non-module
+script `counter.html` already loads via `<script src="counter.js">`.
+
+The emitted `counter.js` is committed to source control — it is not
+gitignored — so a fresh clone can still open `counter.html` directly with
+zero install, exactly as before. This resolves, in favor of Fork A, the
+fork this decision explicitly raised: a build step exists at *authoring*
+time (regenerating `counter.js` from `counter.ts`), but nothing changes at
+*runtime* — the browser still loads a plain script with no loader, no
+bundler output, and no module system.
+
+`package.json`'s `typescript` entry is a `devDependency` used only to
+regenerate `counter.js` at authoring time; it is not a runtime dependency
+and does not conflict with this ADR's no-build/no-module-system-at-runtime
+constraint. See the "Regenerating counter.js" note in `README.md`'s
+Development notes section for the exact command.
