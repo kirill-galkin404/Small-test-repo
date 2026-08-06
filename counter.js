@@ -1,4 +1,5 @@
-// GENERATED FILE — edit src/counter.ts instead
+// Compiled output lives in counter.js; source lives in src/counter.ts.
+// Edit the source (src/counter.ts), not the compiled output (counter.js).
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0;
 var cc = 0; // cc counts every dispatched action, shown as clicks in the title
