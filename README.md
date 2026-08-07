@@ -1,8 +1,8 @@
 
 ## Development notes
 
-- All state (`c`, `cc`, `temp`) and behavior lives in the inline `<script>`
-  block in `counter.html`.
+- All state (`c`, `cc`) and behavior lives in the external `counter.js`
+  file, loaded via `<script src="counter.js">` from `counter.html`.
 - Button click handling uses a single delegated `addEventListener` call keyed
   off each button's `data-action` attribute — there are no inline `onclick`
   handlers.

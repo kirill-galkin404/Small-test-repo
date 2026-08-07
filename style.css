@@ -4,6 +4,11 @@
   font-family: arial;
 }
 
+#err {
+  color: red;
+  font-style: italic;
+}
+
 button[data-action="INCREMENT"] {
   padding: 10px;
   background: green;
