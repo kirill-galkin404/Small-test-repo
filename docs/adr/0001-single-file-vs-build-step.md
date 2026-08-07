@@ -84,3 +84,19 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-08-10)
+
+A `tsc`-only build step has since been added: the widget's logic is now
+authored in strict-mode `counter.ts` and compiled in place to `counter.js`
+with `tsc` (no `"module": "none"`, no bundler, no ES modules). `counter.js`
+itself is now a generated, committed build artifact rather than hand-written
+source. `counter.html` is unchanged — it still loads `counter.js` via a
+plain classic `<script src="counter.js"></script>` tag, so `ACTION` and
+`dispatch` remain reachable from the delegated click handler exactly as
+before. This is an internal-restructuring addition within Fork A, not a
+move to Fork B: there is still no bundler, no module system, and the page
+still opens directly in a browser with no install step required to *run*
+it (an install step is only needed to *build* `counter.js` from
+`counter.ts`). This amendment does not change `Status: Accepted` or the
+Fork A decision itself.
