@@ -11,6 +11,8 @@ document.getElementById("counter").addEventListener("click", function(event){
 });
 
 function dispatch(x){
+  document.getElementById("err").textContent = ""
+
   // main logic
   switch(x){
     case ACTION.INCREMENT:
@@ -35,6 +37,7 @@ function dispatch(x){
       break;
     default:
       console.warn("dispatch: unrecognized action", x)
+      document.getElementById("err").textContent = "Unrecognized action: " + x
       return;
   }
 
