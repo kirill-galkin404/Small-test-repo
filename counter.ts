@@ -16,7 +16,7 @@ document.getElementById("counter")!.addEventListener("click", function(event){
   dispatch(ACTION[action as keyof typeof ACTION])
 });
 
-function dispatch(x: Action){
+function dispatch(x: Action | undefined){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
