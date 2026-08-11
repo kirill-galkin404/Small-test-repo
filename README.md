@@ -1,8 +1,11 @@
 
 ## Development notes
 
-- All state (`c`, `cc`, `temp`) and behavior lives in the inline `<script>`
-  block in `counter.html`.
+- All state (`c`, `cc`) and behavior lives in `counter.js`, an external
+  script loaded by `counter.html` (`<script src="counter.js">`).
+- `counter.js` is a **generated artifact**: its authoritative source is
+  `counter.ts`. Do not hand-edit `counter.js` — edit `counter.ts` and
+  regenerate with `tsc -p tsconfig.json`.
 - Button click handling uses a single delegated `addEventListener` call keyed
   off each button's `data-action` attribute — there are no inline `onclick`
   handlers.
