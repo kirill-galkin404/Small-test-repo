@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "alwaysStrict": false,
+    "module": "none",
+    "outFile": "counter.js",
+    "target": "es2015",
+    "lib": ["dom", "es2015"],
+    "ignoreDeprecations": "6.0"
+  },
+  "files": ["counter.ts"]
+}
