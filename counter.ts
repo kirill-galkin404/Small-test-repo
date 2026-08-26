@@ -1,9 +1,10 @@
-// Document.getElementById is redeclared as returning a non-nullable
-// HTMLElement because every id this file looks up ("counter", "d", "ttl")
-// is guaranteed to exist in counter.html. render() still checks the
-// looked-up elements defensively before using them.
+// Document.getElementById is overloaded, only for the literal id "counter",
+// to return a non-nullable HTMLElement: #counter is the container the whole
+// script is wired against in counter.html and is always present. Lookups
+// for other ids (e.g. "d", "ttl" in render()) keep the normal nullable
+// return type and are checked explicitly before use.
 interface Document {
-  getElementById(elementId: string): HTMLElement;
+  getElementById(elementId: "counter"): HTMLElement;
 }
 
 const ACTION = Object.freeze({
