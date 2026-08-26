@@ -1,22 +1,21 @@
-#d {
+.display {
   font-size: 40px;
-  color: black;
   font-family: arial;
 }
 
-button[data-action="INCREMENT"] {
+.increment {
   padding: 10px;
   background: green;
   color: white;
 }
 
-button[data-action="DECREMENT"] {
+.decrement {
   padding: 10px;
   background: red;
   color: white;
 }
 
-button[data-action="RESET"] {
+.reset {
   padding: 10px;
   background: gray;
   color: white;
