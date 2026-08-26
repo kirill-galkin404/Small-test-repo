@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "target": "ES2015",
+    "module": "none",
+    "strict": true,
+    "rootDir": ".",
+    "ignoreDeprecations": "6.0"
+  },
+  "include": ["counter.ts"]
+}
