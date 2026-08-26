@@ -1,0 +1,12 @@
+{
+  "name": "counter-widget",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build tooling for the counter.html widget's TypeScript source (see docs/adr/0002-typescript-build-step.md).",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "typescript": "^5.6.3"
+  }
+}

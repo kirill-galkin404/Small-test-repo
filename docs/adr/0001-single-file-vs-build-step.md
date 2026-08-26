@@ -1,5 +1,7 @@
 # 1. Single-file vs. build-step architecture for counter.html
 
+> **Superseded by** [0002-typescript-build-step.md](0002-typescript-build-step.md).
+
 ## Status
 
 Accepted

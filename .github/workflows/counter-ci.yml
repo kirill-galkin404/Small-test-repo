@@ -1,0 +1,48 @@
+name: counter-ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  typecheck:
+    name: TypeScript type-check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npx tsc --noEmit -p tsconfig.json
+
+  build:
+    name: Build and drift check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run build
+      - name: Fail if compiled counter.js drifts from the committed artefact
+        run: git diff --exit-code counter.js
+
+  behavior-harness:
+    name: Behaviour-lock harness
+    runs-on: ubuntu-latest
+    # Requires a system Chrome/Chromium binary. GitHub-hosted ubuntu-latest
+    # runners ship Google Chrome preinstalled at /usr/bin/google-chrome,
+    # which scripts/run-behavior-harness.js discovers automatically; set
+    # CHROME_PATH below if that ever changes or on self-hosted runners.
+    env:
+      CHROME_PATH: /usr/bin/google-chrome
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: npm ci
+      - run: npm run build
+      - run: node scripts/run-behavior-harness.js counter.test.html

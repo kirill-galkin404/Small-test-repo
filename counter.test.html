@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div id="counter">
+      <h1 id="ttl">Counter</h1>
+      <p id="d">0</p>
+      <button data-action="INCREMENT">+</button>
+      <button data-action="DECREMENT">-</button>
+      <button data-action="RESET">reset</button>
+      <button data-action="ADD_FOUR">+4</button>
+      <button data-action="DOUBLE">x2</button>
+    </div>
+
+    <script src="counter.js"></script>
+    <script>
+      // Behaviour-lock assertion suite. Run in-page (by
+      // scripts/run-behavior-harness.js over CDP) after counter.js has
+      // executed. `ACTION`, `dispatch`, `render`, `c` and `cc` are the
+      // globals declared by counter.js's top-level classic script; they
+      // share this page's global scope, so they are reachable here without
+      // any module system or `window.*` qualification.
+      window.__runBehaviorTests__ = function () {
+        var results = [];
+        function check(name, cond, detail) {
+          results.push({ name: name, pass: !!cond, detail: detail || '' });
+        }
+        function text(id) {
+          return document.getElementById(id).innerHTML;
+        }
+        function color() {
+          return document.getElementById('d').style.color;
+        }
+
+        // R-0005: ACTION is frozen with exactly the five original codes.
+        check('ACTION is frozen', Object.isFrozen(ACTION));
+        check(
+          'ACTION has exactly the five original codes',
+          JSON.stringify(ACTION) ===
+            JSON.stringify({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 })
+        );
+
+        // R-0001: each matched dispatch case mutates c, then falls through
+        // to the shared cc++ / render() tail.
+        dispatch(ACTION.RESET);
+        var ccBaseline = cc;
+
+        dispatch(ACTION.INCREMENT);
+        check('INCREMENT sets c to 1', text('d') === '1');
+        check('INCREMENT falls through to increment cc', cc === ccBaseline + 1);
+
+        dispatch(ACTION.DECREMENT);
+        check('DECREMENT decrements c back to 0', text('d') === '0');
+
+        dispatch(ACTION.ADD_FOUR);
+        check('ADD_FOUR adds 4 to c', text('d') === '4');
+
+        dispatch(ACTION.DOUBLE);
+        check('DOUBLE doubles c', text('d') === '8');
+
+        dispatch(ACTION.RESET);
+        check('RESET sets c to 0', text('d') === '0');
+
+        // R-0002: render()'s three color thresholds.
+        dispatch(ACTION.RESET);
+        for (var i = 0; i < 11; i++) dispatch(ACTION.INCREMENT); // c === 11
+        check('color is red when c > 10', color() === 'red' && text('d') === '11');
+
+        dispatch(ACTION.RESET);
+        dispatch(ACTION.DECREMENT); // c === -1
+        check('color is blue when c < 0', color() === 'blue' && text('d') === '-1');
+
+        dispatch(ACTION.RESET);
+        check('color is black when c === 0', color() === 'black');
+        dispatch(ACTION.INCREMENT);
+        check('color is black when 0 < c <= 10', color() === 'black' && text('d') === '1');
+
+        // R-0002: title text reflects cc (dispatch count), not raw clicks or c.
+        dispatch(ACTION.RESET);
+        dispatch(ACTION.INCREMENT);
+        check('title text reflects cc', text('ttl') === 'Counter (' + cc + ' clicks)');
+
+        // R-0001: an unrecognized action code warns and returns before the
+        // shared tail — no c/cc mutation, no render.
+        var warned = false;
+        var originalWarn = console.warn;
+        console.warn = function () {
+          warned = true;
+          originalWarn.apply(console, arguments);
+        };
+        var cBeforeUnknown = c;
+        var ccBeforeUnknown = cc;
+        dispatch(999);
+        console.warn = originalWarn;
+        check('unknown action code triggers console.warn', warned === true);
+        check('unknown action code does not mutate c', c === cBeforeUnknown);
+        check('unknown action code does not mutate cc (no shared tail)', cc === ccBeforeUnknown);
+
+        // R-0004: the single delegated click listener no-ops when
+        // event.target has no dataset.action, instead of dispatching.
+        var cBeforeNonButtonClick = c;
+        var ccBeforeNonButtonClick = cc;
+        document.getElementById('counter').dispatchEvent(new MouseEvent('click', { bubbles: true }));
+        check('click on non-button target does not mutate c', c === cBeforeNonButtonClick);
+        check('click on non-button target does not mutate cc', cc === ccBeforeNonButtonClick);
+
+        // R-0004: clicking an actual action button does dispatch, via the
+        // same delegated listener.
+        var ccBeforeButtonClick = cc;
+        document.querySelector('button[data-action="INCREMENT"]').click();
+        check('clicking an action button dispatches via delegation', cc === ccBeforeButtonClick + 1);
+
+        return results;
+      };
+    </script>
+  </body>
+</html>
