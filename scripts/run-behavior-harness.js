@@ -92,12 +92,27 @@ function createCdpClient(child) {
     }
   });
 
+  const SEND_TIMEOUT_MS = 15000;
+
   function send(method, params, sessionId) {
     const id = nextId++;
     const payload = { id, method, params: params || {} };
     if (sessionId) payload.sessionId = sessionId;
     return new Promise((resolve, reject) => {
-      pending.set(id, { resolve, reject });
+      const timer = setTimeout(() => {
+        pending.delete(id);
+        reject(new Error(`CDP command "${method}" (id ${id}) timed out after ${SEND_TIMEOUT_MS}ms waiting for a response`));
+      }, SEND_TIMEOUT_MS);
+      pending.set(id, {
+        resolve: (msg) => {
+          clearTimeout(timer);
+          resolve(msg);
+        },
+        reject: (err) => {
+          clearTimeout(timer);
+          reject(err);
+        },
+      });
       cmdOut.write(JSON.stringify(payload) + '\0');
     });
   }
@@ -112,7 +127,15 @@ function createCdpClient(child) {
 async function waitFor(predicate, { timeoutMs, intervalMs = 100, message }) {
   const deadline = Date.now() + timeoutMs;
   for (;;) {
-    const result = await predicate();
+    let result;
+    try {
+      result = await predicate();
+    } catch (err) {
+      // A transient CDP error (e.g. during navigation/context teardown) is
+      // treated as "not ready yet" and retried, same as a falsy result —
+      // only a timeout should be a hard failure here.
+      result = false;
+    }
     if (result) return result;
     if (Date.now() >= deadline) {
       throw new Error(message || 'timed out waiting for condition');
@@ -183,12 +206,17 @@ async function main() {
   let exitCode = 1;
 
   try {
+    // --no-sandbox disables Chrome's OS-level renderer sandbox, so it's
+    // only added when actually needed: running as root (common in CI
+    // containers, where the sandbox's user-namespace setup is otherwise
+    // unavailable) leaves Chrome unable to start without it.
+    const isRoot = typeof process.getuid === 'function' && process.getuid() === 0;
     child = spawn(
       chromePath,
       [
         '--headless=new',
         '--disable-gpu',
-        '--no-sandbox',
+        ...(isRoot ? ['--no-sandbox'] : []),
         '--remote-debugging-pipe',
         `--user-data-dir=${userDataDir}`,
         'about:blank',
@@ -201,8 +229,7 @@ async function main() {
       setImmediate(() => resolve(null));
     });
     if (spawnError) {
-      console.error(`FAIL: could not launch browser binary "${chromePath}": ${spawnError.message}`);
-      process.exit(1);
+      throw new Error(`could not launch browser binary "${chromePath}": ${spawnError.message}`);
     }
 
     const cdp = createCdpClient(child);
