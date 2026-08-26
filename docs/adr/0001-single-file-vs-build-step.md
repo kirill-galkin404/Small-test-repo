@@ -4,6 +4,8 @@
 
 Accepted
 
+Superseded-by: [ADR-0002](0002-typescript-authoring-language-exception.md) (TypeScript-as-authoring-language exception to the no-`package.json` axis only; every other guarantee in this ADR remains in force)
+
 ## Context
 
 `counter.html` is currently a single, self-contained HTML file:

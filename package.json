@@ -1,0 +1,13 @@
+{
+  "name": "small-test-repo",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Zero-install counter widget; TypeScript is a dev-only authoring tool (see docs/adr/0002-typescript-authoring-language-exception.md).",
+  "scripts": {
+    "build": "tsc",
+    "verify:generated": "tsc && git diff --exit-code counter.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
