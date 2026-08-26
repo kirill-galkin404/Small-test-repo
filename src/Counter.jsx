@@ -8,7 +8,7 @@ export default function Counter() {
 
   return (
     <div id="counter">
-      <h1 id="ttl">{`Counter (${cc} clicks)`}</h1>
+      <h1 id="ttl">{cc === 0 ? "Counter" : `Counter (${cc} clicks)`}</h1>
       <p id="d" style={{ color: colourFor(c) }}>
         {c}
       </p>

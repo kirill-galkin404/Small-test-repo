@@ -47,13 +47,23 @@ is the first red value; `c = -1` is the first blue value.
 
 ## Title string format
 
-`#ttl`'s text is exactly:
+`#ttl`'s text depends on whether any action has ever been dispatched yet:
 
-```
-Counter (N clicks)
-```
+- Before the first dispatched action (`cc = 0`, i.e. the initial/untouched
+  state), `#ttl`'s text is the bare string `Counter` — the original
+  `counter.js` only ever updates `#ttl` from inside `render()`, which is
+  itself only called from `dispatch()`, so it is never invoked on page
+  load; the static markup `Counter` is what the page shows until the first
+  click.
+- From the first dispatched action onward (`cc >= 1`), `#ttl`'s text is
+  exactly:
 
-where `N` is the current value of `cc` (e.g. `cc = 0` → `Counter (0 clicks)`).
+  ```
+  Counter (N clicks)
+  ```
+
+  where `N` is the current value of `cc` (e.g. `cc = 1` →
+  `Counter (1 clicks)`).
 
 ## Recorded decisions
 
@@ -96,8 +106,9 @@ is considered complete.
 - [x] The value display (`#d`) turns red once the value exceeds 10.
 - [x] The value display (`#d`) turns blue once the value goes below 0.
 - [x] The value display (`#d`) is black for values from 0 to 10 inclusive.
-- [x] The title always reads exactly `Counter (N clicks)` with the correct
-      click count.
+- [x] The title reads the bare `Counter` before any button has been
+      clicked, then exactly `Counter (N clicks)` with the correct click
+      count from the first click onward.
 - [x] All five buttons (`+`, `-`, `reset`, `+4`, `x2`) render with the same
       padding/background/color visual treatment (D-0004).
 - [x] The built app loads from `index.html` via Vite with no console errors
