@@ -30,6 +30,10 @@ function dispatch(x){
       c = c + 4
       break;
     case ACTION.DOUBLE:
+      if (c < 0) {
+        console.log("dispatch: ACTION.DOUBLE refused, c < 0", c)
+        return;
+      }
       console.log("dispatch: ACTION.DOUBLE")
       c = c * 2
       break;
