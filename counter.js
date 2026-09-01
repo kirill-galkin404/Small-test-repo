@@ -38,6 +38,7 @@ function dispatch(x){
       return;
   }
 
+  c = Math.max(0, c)
   cc++
   console.log("dispatch: cc incremented to", cc)
   render()
@@ -48,6 +49,7 @@ function render(){
   if(c > 10){
     document.getElementById("d").style.color = "red"
   } else if(c < 0){
+    // Unreachable via the UI after the dispatch() clamp; kept as a defensive tell for console-level state tampering.
     document.getElementById("d").style.color = "blue"
   } else {
     document.getElementById("d").style.color = "black"
