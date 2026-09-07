@@ -1,0 +1,65 @@
+.counter {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  background: #f7f7f9;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  font-family: Arial, sans-serif;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.value {
+  font-size: 40px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.button:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+.button:hover {
+  filter: brightness(1.1);
+}
+
+.buttonIncrement {
+  background: green;
+}
+
+.buttonDecrement {
+  background: red;
+}
+
+.buttonReset {
+  background: gray;
+}
+
+.buttonAddFour {
+  background: darkorange;
+}
+
+.buttonDouble {
+  background: purple;
+}
