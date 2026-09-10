@@ -1,0 +1,16 @@
+#d {
+  font-size: 40px;
+  color: black;
+  font-family: arial;
+}
+
+button[data-action] {
+  padding: 10px;
+  color: white;
+}
+
+button[data-action="INCREMENT"] { background: green; }
+button[data-action="DECREMENT"] { background: red; }
+button[data-action="RESET"] { background: gray; }
+button[data-action="ADD_FOUR"] { background: blue; }
+button[data-action="DOUBLE"] { background: purple; }
