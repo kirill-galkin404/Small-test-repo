@@ -1,9 +1,7 @@
+import Counter from './Counter';
+
 function App() {
-  return (
-    <div id="counter">
-      <h1>Counter</h1>
-    </div>
-  );
+  return <Counter />;
 }
 
 export default App;
