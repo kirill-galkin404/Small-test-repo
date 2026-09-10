@@ -15,7 +15,7 @@ export default function Counter() {
 
   return (
     <div id="counter">
-      <h1 id="ttl">{`Counter (${cc} clicks)`}</h1>
+      <h1 id="ttl">{cc === 0 ? 'Counter' : `Counter (${cc} clicks)`}</h1>
       <p id="d" style={{ color }}>{c}</p>
       <button data-action="INCREMENT" onClick={() => dispatch(ACTION.INCREMENT)}>+</button>
       <button data-action="DECREMENT" onClick={() => dispatch(ACTION.DECREMENT)}>-</button>

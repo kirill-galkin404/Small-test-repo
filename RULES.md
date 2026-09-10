@@ -23,9 +23,10 @@ overrides what is shown.
 ## Click counter (`cc`) and the title
 
 Every recognized action increments a separate counter, `cc`, exactly once.
-`cc` is never shown in the numeric display — it is surfaced only in the
-title, formatted as `Counter (N clicks)`, where `N` is the current value of
-`cc`.
+`cc` is never shown in the numeric display — once at least one action has
+been dispatched (`cc > 0`), it is surfaced in the title, formatted as
+`Counter (N clicks)`, where `N` is the current value of `cc`. Before any
+action has been dispatched (`cc == 0`), the title reads plain `Counter`.
 
 ## Colour threshold
 

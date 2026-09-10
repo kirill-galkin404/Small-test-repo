@@ -64,7 +64,8 @@ describe('Counter component', () => {
   it('renders the initial state', () => {
     render(<Counter />)
     expect(getDisplay()).toHaveTextContent('0')
-    expect(getTitle()).toHaveTextContent('Counter (0 clicks)')
+    expect(getTitle()).toHaveTextContent('Counter')
+    expect(getTitle()).not.toHaveTextContent('clicks')
   })
 
   it('INCREMENT increments the display and cc once', () => {
@@ -144,6 +145,7 @@ describe('Counter component', () => {
 
     render(<Counter />)
     expect(getDisplay()).toHaveTextContent('0')
-    expect(getTitle()).toHaveTextContent('Counter (0 clicks)')
+    expect(getTitle()).toHaveTextContent('Counter')
+    expect(getTitle()).not.toHaveTextContent('clicks')
   })
 })
