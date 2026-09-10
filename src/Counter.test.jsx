@@ -1,3 +1,4 @@
+// See RULES.md for the canonical human-readable business-rules spec this suite verifies.
 import '@testing-library/jest-dom';
 import React from 'react';
 import { describe, it, expect } from 'vitest';
