@@ -1,5 +1,6 @@
 import { useReducer } from 'react';
 import { ACTION, counterReducer, initialState } from './counterReducer';
+import ActionButton from './ActionButton';
 
 function Counter() {
   const [state, dispatch] = useReducer(counterReducer, initialState);
@@ -10,21 +11,21 @@ function Counter() {
     <div id="counter">
       <h1 id="ttl">Counter ({state.cc} clicks)</h1>
       <p id="d" style={{ color }}>{state.c}</p>
-      <button data-action="INCREMENT" onClick={() => dispatch({ type: ACTION.INCREMENT })}>
+      <ActionButton action="INCREMENT" onClick={() => dispatch({ type: ACTION.INCREMENT })}>
         Increment
-      </button>
-      <button data-action="DECREMENT" onClick={() => dispatch({ type: ACTION.DECREMENT })}>
+      </ActionButton>
+      <ActionButton action="DECREMENT" onClick={() => dispatch({ type: ACTION.DECREMENT })}>
         Decrement
-      </button>
-      <button data-action="RESET" onClick={() => dispatch({ type: ACTION.RESET })}>
+      </ActionButton>
+      <ActionButton action="RESET" onClick={() => dispatch({ type: ACTION.RESET })}>
         Reset
-      </button>
-      <button data-action="ADD_FOUR" onClick={() => dispatch({ type: ACTION.ADD_FOUR })}>
+      </ActionButton>
+      <ActionButton action="ADD_FOUR" onClick={() => dispatch({ type: ACTION.ADD_FOUR })}>
         Add Four
-      </button>
-      <button data-action="DOUBLE" onClick={() => dispatch({ type: ACTION.DOUBLE })}>
+      </ActionButton>
+      <ActionButton action="DOUBLE" onClick={() => dispatch({ type: ACTION.DOUBLE })}>
         Double
-      </button>
+      </ActionButton>
     </div>
   );
 }
