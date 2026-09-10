@@ -84,3 +84,24 @@ and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-08-01)
+
+The project has reversed the Fork A decision above and moved to **Fork B:
+introduce a build step**, specifically a Vite + React toolchain. The counter
+widget has been re-platformed from the single-file `counter.html` /
+`counter.js` / `style.css` into a Vite + React application, with a
+`package.json`, a `vite.config.js`, and the component split into `src/*.jsx`
+modules.
+
+Rationale: as anticipated in the original Consequences section, testability
+needs grew substantially — an automated Vitest/React Testing Library suite
+was introduced for the counter widget, which requires a module system and a
+real entry point rather than a classic inline script relying on global
+scope. Per the ADR's own guidance, this revisit is being recorded as an
+amendment to this ADR; a full architectural re-decision would warrant its
+own ADR, but this amendment records the reversal for the historical record.
+This amendment does not delete or rewrite the original `Status: Accepted` or
+the Fork A `## Decision` text above, which remain intact as the historical
+record of the original choice; in practice, the Fork B toolchain described
+here supersedes that original decision going forward.
