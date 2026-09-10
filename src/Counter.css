@@ -1,6 +1,5 @@
 #d {
   font-size: 40px;
-  color: black;
   font-family: arial;
 }
 
@@ -19,5 +18,17 @@ button[data-action="DECREMENT"] {
 button[data-action="RESET"] {
   padding: 10px;
   background: gray;
+  color: white;
+}
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: teal;
+  color: white;
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: purple;
   color: white;
 }
