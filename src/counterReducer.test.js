@@ -1,3 +1,4 @@
+// See RULES.md for the canonical human-readable business-rules spec this suite verifies.
 import { describe, it, expect } from 'vitest';
 import { ACTION, initialState, counterReducer } from './counterReducer.js';
 
