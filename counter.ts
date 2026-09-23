@@ -1,4 +1,4 @@
-const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
+const ACTION: { [key: string]: number } = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
@@ -10,7 +10,7 @@ document.getElementById("counter").addEventListener("click", function(event){
   dispatch(ACTION[action])
 });
 
-function dispatch(x){
+function dispatch(x: number){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
