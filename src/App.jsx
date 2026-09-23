@@ -10,7 +10,16 @@ function prefersDark() {
 
 export default function App() {
   const [theme, setTheme] = useState(null)
-  const effectiveTheme = theme ?? (prefersDark() ? 'dark' : 'light')
+  const [osDark, setOsDark] = useState(prefersDark)
+  const effectiveTheme = theme ?? (osDark ? 'dark' : 'light')
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return
+    const mql = window.matchMedia('(prefers-color-scheme: dark)')
+    const handleChange = (event) => setOsDark(event.matches)
+    mql.addEventListener('change', handleChange)
+    return () => mql.removeEventListener('change', handleChange)
+  }, [])
 
   useEffect(() => {
     if (theme) {
