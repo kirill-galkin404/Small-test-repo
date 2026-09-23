@@ -1,5 +1,6 @@
 import { useReducer } from 'react'
 import { counterReducer } from './counterReducer.js'
+import { colorForValue } from './colorForValue.js'
 
 const initialState = { value: 0, clickCount: 0 }
 
@@ -9,7 +10,7 @@ export default function Counter() {
   return (
     <div id="counter">
       <h1 id="ttl">Counter ({state.clickCount} clicks)</h1>
-      <p id="d">{state.value}</p>
+      <p id="d" className={`value-${colorForValue(state.value)}`}>{state.value}</p>
       <button data-action="INCREMENT" onClick={() => dispatch({ type: 'INCREMENT' })}>+</button>
       <button data-action="DECREMENT" onClick={() => dispatch({ type: 'DECREMENT' })}>-</button>
       <button data-action="RESET" onClick={() => dispatch({ type: 'RESET' })}>reset</button>
