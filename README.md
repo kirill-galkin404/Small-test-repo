@@ -48,8 +48,11 @@ in `style.css`:
   with no user interaction required.
 - **Manual override**, via a sixth button (`#theme-toggle`) rendered by
   `CounterApp`. Clicking it sets `data-theme="dark"` on the document's root
-  `<html>` element to force dark mode on, or removes that attribute to
-  force it off — independent of, and overriding, the OS-level preference.
+  `<html>` element to force dark mode on, independent of the OS-level
+  preference. Clicking it again removes that attribute, which reverts to
+  the automatic behavior above — if the OS itself prefers dark, the page
+  stays dark, since there is no `data-theme="light"` override; the manual
+  toggle can only force dark mode **on**, not force light mode.
   Styling for this override lives in the `[data-theme="dark"]` CSS block in
   `style.css`.
 
@@ -78,9 +81,18 @@ used to contain has been fully replaced by `src/counterReducer.js` and
 
 ## Tests (dev-only)
 
-`package.json` declares dev-only test tooling (`jest` and `jsdom`) used to
-unit-test `src/counterReducer.js` — it is not a runtime or production
-dependency, and it does not introduce a build step for `counter.html`.
+`package.json` declares dev-only test tooling (`jest`, `jsdom`, and the
+`react`/`react-dom` npm packages used only as test-time stand-ins for the
+CDN globals) — it is not a runtime or production dependency, and it does
+not introduce a build step for `counter.html`. Two suites exist:
+
+- `test/counterReducer.test.js` — unit tests for the pure
+  `src/counterReducer.js` formulas and dispatch/click-count policy.
+- `test/counterApp.test.js` — jsdom end-to-end integration tests that
+  mount the real `src/CounterApp.js` component tree, simulate button
+  clicks, and assert the rendered value/class, click-count title, and
+  dark-theme toggle behavior.
+
 Run the tests with:
 
 ```

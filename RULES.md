@@ -7,18 +7,27 @@ currently contains inaccuracies described below.
 
 ## Where the logic actually lives
 
-The widget's entire behavior is implemented in the **external**
-JavaScript file `counter.js`, loaded by `counter.html` via:
+**Historical note:** the business rules on this page were originally
+verified against a pre-rewrite implementation in which the widget's
+entire behavior lived in one **external** JavaScript file, `counter.js`,
+loaded by `counter.html` via `<script src="counter.js"></script>` — a
+separate, external `.js` file referenced by `src`, **not** an inline
+`<script>` block embedded in `counter.html` (the original `README.md`
+incorrectly claimed the latter).
 
-```html
-<script src="counter.js"></script>
-```
+That `counter.js` file has since been **deleted** as part of the React
+rewrite. The same behavior now lives in two files, both loaded by
+`counter.html` via external `<script src="...">` tags (still no inline
+script, and still no bundler):
 
-This is a separate, external `.js` file referenced by `src`, **not**
-an inline `<script>` block embedded in `counter.html`. `README.md`
-currently states that the behavior "lives in the inline `<script>`
-block in `counter.html`" — that claim is incorrect and should be
-read as referring to `counter.js` as an external script file instead.
+- `src/counterReducer.js` — a pure `(state, actionType) => nextState`
+  function implementing the five action formulas below.
+- `src/CounterApp.js` — the React component tree (built with
+  `React.createElement`, no JSX) that wires the five buttons and the
+  dark-theme toggle to that reducer via `useReducer`.
+
+The formulas, thresholds, and policies documented below are unchanged
+by the rewrite — only their implementation moved.
 
 ## State shape
 
