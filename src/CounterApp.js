@@ -31,11 +31,40 @@
  *     <button data-action="ADD_FOUR">+4</button>
  *     <button data-action="DOUBLE">x2</button>
  *   </div>
+ *
+ * Dark theme:
+ *   - A manual toggle button (id="theme-toggle", data-action="TOGGLE_THEME")
+ *     is rendered alongside the five counter buttons but is NOT wired to
+ *     the counterReducer/dispatch — it flips its own local
+ *     React.useState boolean ("manually dark") and, via a React.useEffect,
+ *     sets document.documentElement.setAttribute('data-theme', 'dark')
+ *     when true, or removeAttribute('data-theme') when false. This is
+ *     independent of the OS-level `prefers-color-scheme: dark` media
+ *     query in style.css, which applies automatically when there is no
+ *     manual override.
  */
 function CounterApp() {
   var state = React.useReducer(counterReducer, { c: 0, cc: 0 });
   var s = state[0];
   var dispatch = state[1];
+
+  var darkState = React.useState(false);
+  var manuallyDark = darkState[0];
+  var setManuallyDark = darkState[1];
+
+  React.useEffect(function () {
+    if (manuallyDark) {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+      document.documentElement.removeAttribute('data-theme');
+    }
+  }, [manuallyDark]);
+
+  function toggleTheme() {
+    setManuallyDark(function (prev) {
+      return !prev;
+    });
+  }
 
   function valueClass(c) {
     if (c > 10) {
@@ -82,6 +111,11 @@ function CounterApp() {
       'button',
       { 'data-action': 'DOUBLE', onClick: makeClickHandler('DOUBLE') },
       'x2'
+    ),
+    React.createElement(
+      'button',
+      { id: 'theme-toggle', 'data-action': 'TOGGLE_THEME', onClick: toggleTheme },
+      manuallyDark ? '☀️ Light theme' : '🌙 Dark theme'
     )
   );
 }
