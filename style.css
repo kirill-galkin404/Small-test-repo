@@ -1,7 +1,18 @@
 #d {
   font-size: 40px;
-  color: black;
   font-family: arial;
+}
+
+.value--high {
+  color: red;
+}
+
+.value--negative {
+  color: blue;
+}
+
+.value--normal {
+  color: black;
 }
 
 button[data-action="INCREMENT"] {
@@ -20,4 +31,124 @@ button[data-action="RESET"] {
   padding: 10px;
   background: gray;
   color: white;
+}
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: blue;
+  color: white;
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: purple;
+  color: white;
+}
+
+#theme-toggle {
+  padding: 10px;
+  background: #444;
+  color: white;
+}
+
+@media (prefers-color-scheme: dark) {
+  html,
+  body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+  }
+
+  .value--high {
+    color: #ff6b6b;
+  }
+
+  .value--negative {
+    color: #74c0fc;
+  }
+
+  .value--normal {
+    color: #e0e0e0;
+  }
+
+  button[data-action="INCREMENT"] {
+    background: #2f9e44;
+    color: #f1f1f1;
+  }
+
+  button[data-action="DECREMENT"] {
+    background: #e03131;
+    color: #f1f1f1;
+  }
+
+  button[data-action="RESET"] {
+    background: #868e96;
+    color: #f1f1f1;
+  }
+
+  button[data-action="ADD_FOUR"] {
+    background: #4dabf7;
+    color: #f1f1f1;
+  }
+
+  button[data-action="DOUBLE"] {
+    background: #9775fa;
+    color: #f1f1f1;
+  }
+
+  #theme-toggle {
+    background: #666;
+    color: #f1f1f1;
+  }
+}
+
+[data-theme="dark"] {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] body {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] .value--high {
+  color: #ff6b6b;
+}
+
+[data-theme="dark"] .value--negative {
+  color: #74c0fc;
+}
+
+[data-theme="dark"] .value--normal {
+  color: #e0e0e0;
+}
+
+[data-theme="dark"] button[data-action="INCREMENT"] {
+  background: #2f9e44;
+  color: #f1f1f1;
+}
+
+[data-theme="dark"] button[data-action="DECREMENT"] {
+  background: #e03131;
+  color: #f1f1f1;
+}
+
+[data-theme="dark"] button[data-action="RESET"] {
+  background: #868e96;
+  color: #f1f1f1;
+}
+
+[data-theme="dark"] button[data-action="ADD_FOUR"] {
+  background: #4dabf7;
+  color: #f1f1f1;
+}
+
+[data-theme="dark"] button[data-action="DOUBLE"] {
+  background: #9775fa;
+  color: #f1f1f1;
+}
+
+[data-theme="dark"] #theme-toggle {
+  background: #666;
+  color: #f1f1f1;
 }
