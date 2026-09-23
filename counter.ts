@@ -3,7 +3,7 @@ var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
 document.getElementById("counter").addEventListener("click", function(event){
-  var action = event.target.dataset.action
+  var action = (event.target as HTMLElement).dataset.action
   if(!action){
     return;
   }
@@ -44,7 +44,7 @@ function dispatch(x){
 }
 
 function render(){
-  document.getElementById("d").innerHTML = c
+  document.getElementById("d").innerHTML = String(c)
   if(c > 10){
     document.getElementById("d").style.color = "red"
   } else if(c < 0){
