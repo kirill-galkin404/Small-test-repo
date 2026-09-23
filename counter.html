@@ -4,16 +4,11 @@
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div id="counter">
-      <h1 id="ttl">Counter</h1>
-      <p id="d">0</p>
-      <button data-action="INCREMENT">+</button>
-      <button data-action="DECREMENT">-</button>
-      <button data-action="RESET">reset</button>
-      <button data-action="ADD_FOUR">+4</button>
-      <button data-action="DOUBLE">x2</button>
-    </div>
+    <div id="root"></div>
 
-    <script src="counter.js"></script>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="src/counterReducer.js"></script>
+    <script src="src/CounterApp.js"></script>
   </body>
 </html>
