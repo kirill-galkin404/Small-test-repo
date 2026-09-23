@@ -57,8 +57,7 @@ fix for the previous defect where the counter could grow unbounded.
   The reducer/color function itself only produces the token (`high`, `low`,
   `normal`); the actual color values applied on screen (including light/dark
   palette variants) live in `src/theme.css`, which maps each token to its
-  concrete color per the active palette (see D-0007 for details on the
-  palette split — mentioned here informationally only).
+  concrete color per the active palette.
 
 ## Persistence
 

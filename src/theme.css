@@ -88,6 +88,11 @@ button[data-action="DOUBLE"] {
   color: var(--btn-text);
 }
 
+#d {
+  font-size: 40px;
+  font-family: arial;
+}
+
 .value-high {
   color: var(--value-high);
 }
