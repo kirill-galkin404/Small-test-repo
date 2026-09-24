@@ -1,0 +1,40 @@
+/* Dark-by-default theme using CSS custom properties. */
+:root {
+  --bg-color: #121212;
+  --text-color: #f0f0f0;
+  --heading-color: #ffffff;
+
+  /* Value color-coding categories (kept distinct from each other and from
+     the dark background). formatter.js still returns the literal category
+     names 'red' / 'blue' / 'black' — only the actual rendered colors below
+     are theme-specific. */
+  --value-red: #ff6b6b;
+  --value-blue: #6ea8fe;
+  --value-black: #e6e6e6;
+
+  --btn-bg: #2a2a2a;
+  --btn-text: #f0f0f0;
+  --btn-border: #444444;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: arial;
+}
+
+#ttl {
+  color: var(--heading-color);
+}
+
+#d {
+  font-size: 40px;
+  font-family: arial;
+}
+
+button {
+  padding: 10px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border: 1px solid var(--btn-border);
+}
