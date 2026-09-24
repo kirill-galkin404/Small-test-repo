@@ -1,3 +1,4 @@
 import { createRoot } from 'react-dom/client';
+import Counter from './Counter.jsx';
 
-createRoot(document.getElementById('root')).render(<div>Counter widget loading…</div>);
+createRoot(document.getElementById('root')).render(<Counter />);
