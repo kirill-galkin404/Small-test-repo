@@ -1,0 +1,113 @@
+/*
+ * Theme tokens for the counter widget.
+ *
+ * Light palette is the default. A `prefers-color-scheme: dark` media query
+ * switches to the dark palette automatically, and an explicit
+ * `data-theme="dark"` attribute on the root element (toggled via the
+ * "Toggle theme" button) overrides the OS preference either way.
+ */
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-button-bg: #f0f0f0;
+  --color-button-text: #111111;
+  --color-button-border: #cccccc;
+
+  --color-red: #b00020;
+  --color-blue: #0044cc;
+  --color-black: #111111;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #121212;
+    --color-text: #f0f0f0;
+    --color-button-bg: #2a2a2a;
+    --color-button-text: #f0f0f0;
+    --color-button-border: #444444;
+
+    --color-red: #ff6b6b;
+    --color-blue: #6ea8ff;
+    --color-black: #f0f0f0;
+  }
+}
+
+/* Explicit toggle overrides the OS preference, in either direction. */
+:root[data-theme="dark"] {
+  --color-bg: #121212;
+  --color-text: #f0f0f0;
+  --color-button-bg: #2a2a2a;
+  --color-button-text: #f0f0f0;
+  --color-button-border: #444444;
+
+  --color-red: #ff6b6b;
+  --color-blue: #6ea8ff;
+  --color-black: #f0f0f0;
+}
+
+:root[data-theme="light"] {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-button-bg: #f0f0f0;
+  --color-button-text: #111111;
+  --color-button-border: #cccccc;
+
+  --color-red: #b00020;
+  --color-blue: #0044cc;
+  --color-black: #111111;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+#counter {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.counter-display--red {
+  color: var(--color-red);
+}
+
+.counter-display--blue {
+  color: var(--color-blue);
+}
+
+.counter-display--black {
+  color: var(--color-black);
+}
+
+button[data-action] {
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
+  border: 1px solid var(--color-button-border);
+}
+
+button[data-action="INCREMENT"] {
+  border-color: var(--color-blue);
+}
+
+button[data-action="DECREMENT"] {
+  border-color: var(--color-red);
+}
+
+button[data-action="RESET"] {
+  border-color: var(--color-black);
+}
+
+button[data-action="ADD_FOUR"] {
+  border-color: var(--color-blue);
+}
+
+button[data-action="DOUBLE"] {
+  border-color: var(--color-blue);
+}
+
+.theme-toggle {
+  background-color: var(--color-button-bg);
+  color: var(--color-button-text);
+  border: 1px solid var(--color-button-border);
+}
