@@ -1,16 +1,19 @@
-const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
+const ACTION: { [key: string]: number } = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
-document.getElementById("counter").addEventListener("click", function(event){
-  var action = event.target.dataset.action
-  if(!action){
-    return;
-  }
-  dispatch(ACTION[action])
-});
+var counterEl = document.getElementById("counter")
+if(counterEl){
+  counterEl.addEventListener("click", function(event){
+    var action = (event.target as HTMLElement).dataset.action
+    if(!action){
+      return;
+    }
+    dispatch(ACTION[action])
+  });
+}
 
-function dispatch(x){
+function dispatch(x: number){
   // main logic
   switch(x){
     case ACTION.INCREMENT:
@@ -44,15 +47,21 @@ function dispatch(x){
 }
 
 function render(){
-  document.getElementById("d").innerHTML = c
-  if(c > 10){
-    document.getElementById("d").style.color = "red"
-  } else if(c < 0){
-    document.getElementById("d").style.color = "blue"
-  } else {
-    document.getElementById("d").style.color = "black"
+  var dEl = document.getElementById("d")
+  if(dEl){
+    dEl.innerHTML = String(c)
+    if(c > 10){
+      dEl.style.color = "red"
+    } else if(c < 0){
+      dEl.style.color = "blue"
+    } else {
+      dEl.style.color = "black"
+    }
   }
 
   // update title
-  document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
+  var ttlEl = document.getElementById("ttl")
+  if(ttlEl){
+    ttlEl.innerHTML = "Counter (" + cc + " clicks)"
+  }
 }
