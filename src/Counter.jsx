@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+import { useReducer, useState, useEffect } from 'react';
 import { ACTION } from './actions.js';
 import { counterReducer } from './reducer.js';
 
@@ -30,12 +30,25 @@ function colorStateFor(c) {
 
 export default function Counter() {
   const [state, dispatch] = useReducer(counterReducer, { c: 0, cc: 0 });
+  const [theme, setTheme] = useState(null);
   const colorState = colorStateFor(state.c);
+
+  useEffect(() => {
+    if (theme === null) {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', theme);
+    }
+  }, [theme]);
 
   return (
     <div id="counter">
       <h1 id="ttl">{`Counter (${state.cc} clicks)`}</h1>
-      <div id="d" data-color-state={colorState} style={{ color: colorState }}>
+      <div
+        id="d"
+        data-color-state={colorState}
+        className={`counter-display counter-display--${colorState}`}
+      >
         {state.c}
       </div>
       {BUTTONS.map(({ action, name, label }) => (
@@ -48,6 +61,13 @@ export default function Counter() {
           {label}
         </button>
       ))}
+      <button
+        type="button"
+        className="theme-toggle"
+        onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
+      >
+        Toggle theme
+      </button>
     </div>
   );
 }
