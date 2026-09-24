@@ -4,6 +4,6 @@
     "lib": ["ES2015", "DOM"],
     "strict": false,
     "noImplicitAny": true,
-    "strictNullChecks": false
+    "strictNullChecks": true
   }
 }
