@@ -1,23 +1,81 @@
+:root {
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --muted: #6b6b6b;
+  --accent: #2f6f4f;
+  --border: #d0d0cc;
+
+  --btn-increment: #2e7d32;
+  --btn-decrement: #c62828;
+  --btn-reset: #616161;
+  --btn-text: #ffffff;
+}
+
+:root[data-theme="dark"] {
+  --bg: #16181a;
+  --surface: #1f2225;
+  --text: #f0f0ee;
+  --muted: #9a9a96;
+  --accent: #4fae7d;
+  --border: #3a3d40;
+}
+
+body {
+  background: var(--bg);
+}
+
+#counter {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
 #d {
   font-size: 40px;
-  color: black;
+  color: var(--text);
   font-family: arial;
 }
 
 button[data-action="INCREMENT"] {
   padding: 10px;
-  background: green;
-  color: white;
+  background: var(--btn-increment);
+  color: var(--btn-text);
 }
 
 button[data-action="DECREMENT"] {
   padding: 10px;
-  background: red;
-  color: white;
+  background: var(--btn-decrement);
+  color: var(--btn-text);
 }
 
 button[data-action="RESET"] {
   padding: 10px;
-  background: gray;
-  color: white;
+  background: var(--btn-reset);
+  color: var(--btn-text);
+}
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: var(--accent);
+  color: var(--btn-text);
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: var(--muted);
+  color: var(--btn-text);
+}
+
+button[data-action]:hover {
+  filter: brightness(1.1);
+}
+
+button[data-action]:active {
+  filter: brightness(0.9);
+}
+
+button[data-action]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-color: var(--border);
 }
