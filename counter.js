@@ -56,3 +56,34 @@ function render(){
   // update title
   document.getElementById("ttl").innerHTML = "Counter (" + cc + " clicks)"
 }
+
+// --- Theme toggle (presentation-only; never goes through dispatch()/ACTION) ---
+var THEME_STORAGE_KEY = "theme"
+
+function applyTheme(theme){
+  if(theme === "dark"){
+    document.documentElement.setAttribute("data-theme", "dark")
+  } else {
+    document.documentElement.removeAttribute("data-theme")
+  }
+}
+
+function getInitialTheme(){
+  var stored = localStorage.getItem(THEME_STORAGE_KEY)
+  if(stored === "dark" || stored === "light"){
+    return stored
+  }
+  if(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches){
+    return "dark"
+  }
+  return "light"
+}
+
+applyTheme(getInitialTheme())
+
+document.getElementById("theme-toggle").addEventListener("click", function(){
+  var isDark = document.documentElement.getAttribute("data-theme") === "dark"
+  var next = isDark ? "light" : "dark"
+  applyTheme(next)
+  localStorage.setItem(THEME_STORAGE_KEY, next)
+});
