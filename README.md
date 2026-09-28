@@ -1,11 +1,13 @@
 
 ## Development notes
 
-- All state (`c`, `cc`, `temp`) and behavior lives in the inline `<script>`
-  block in `counter.html`.
+See [RULES.md](RULES.md) for the full business-rules reference.
+
+- All state (`c`, `cc`) and behavior lives in `counter.js`, loaded via
+  `<script src="counter.js"></script>` in `counter.html`.
 - Button click handling uses a single delegated `addEventListener` call keyed
-  off each button's `data-action` attribute — there are no inline `onclick`
-  handlers.
+  off each button's `data-action` attribute — there are no per-button
+  `onclick` handlers.
 - `dispatch(x)` is the single entry point for mutating state; every action
   case falls through to a shared tail that increments `cc` and calls
   `render()`.
