@@ -12,6 +12,15 @@
   --btn-text: #ffffff;
 }
 
+:root[data-theme="dark"] {
+  --bg: #16181a;
+  --surface: #1f2225;
+  --text: #f0f0ee;
+  --muted: #9a9a96;
+  --accent: #4fae7d;
+  --border: #3a3d40;
+}
+
 #d {
   font-size: 40px;
   color: var(--text);
