@@ -11,6 +11,11 @@ See [RULES.md](RULES.md) for the full business-rules reference.
 - `dispatch(x)` is the single entry point for mutating state; every action
   case falls through to a shared tail that increments `cc` and calls
   `render()`.
+- The `#theme-toggle` button has its own separate `addEventListener` call in
+  `counter.js`, independent of the delegated `#counter` listener above. It
+  is presentation-only: it toggles `data-theme` on `<html>` and persists the
+  choice to `localStorage`, but never calls `dispatch()` and never changes
+  `c` or `cc`.
 
 See [docs/adr/0001-single-file-vs-build-step.md](docs/adr/0001-single-file-vs-build-step.md)
 for the architectural decision on keeping `counter.html` single-file vs.

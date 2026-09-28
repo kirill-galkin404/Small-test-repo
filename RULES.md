@@ -64,3 +64,14 @@ rule below maps to one of them:
 | `ADD_FOUR`  | `c = c + 4`    | yes |
 | `DOUBLE`    | `c = c * 2`    | yes |
 | *(anything unrecognized)* | unchanged | no — ignored |
+
+## Theme toggle
+
+The `#theme-toggle` button is presentation-only. Its click handler is a
+separate `addEventListener` registered directly on `#theme-toggle` — it is
+**not** part of the delegated `#counter` click handler, has no
+`data-action` attribute, and is wired up independently in `counter.js`.
+Clicking it flips the `data-theme` attribute on `<html>` and persists the
+choice to `localStorage`. The theme toggle does not dispatch an ACTION and
+does not change `c` or `cc` — it never calls `dispatch()`, is not one of
+the five `ACTION` keys, and has no effect on any business rule above.
