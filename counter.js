@@ -69,7 +69,12 @@ function applyTheme(theme){
 }
 
 function getInitialTheme(){
-  var stored = localStorage.getItem(THEME_STORAGE_KEY)
+  var stored = null
+  try {
+    stored = localStorage.getItem(THEME_STORAGE_KEY)
+  } catch(e) {
+    console.warn("theme: localStorage unavailable", e)
+  }
   if(stored === "dark" || stored === "light"){
     return stored
   }
@@ -85,5 +90,9 @@ document.getElementById("theme-toggle").addEventListener("click", function(){
   var isDark = document.documentElement.getAttribute("data-theme") === "dark"
   var next = isDark ? "light" : "dark"
   applyTheme(next)
-  localStorage.setItem(THEME_STORAGE_KEY, next)
+  try {
+    localStorage.setItem(THEME_STORAGE_KEY, next)
+  } catch(e) {
+    console.warn("theme: localStorage unavailable", e)
+  }
 });

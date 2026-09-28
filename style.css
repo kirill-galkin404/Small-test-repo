@@ -21,6 +21,15 @@
   --border: #3a3d40;
 }
 
+body {
+  background: var(--bg);
+}
+
+#counter {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
 #d {
   font-size: 40px;
   color: var(--text);
