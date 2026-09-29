@@ -1,0 +1,23 @@
+.counter__value {
+  font-size: 40px;
+  font-family: arial;
+}
+
+.counter__btn {
+  padding: 10px;
+}
+
+.counter__btn--increment {
+  background: green;
+  color: white;
+}
+
+.counter__btn--decrement {
+  background: red;
+  color: white;
+}
+
+.counter__btn--reset {
+  background: gray;
+  color: white;
+}

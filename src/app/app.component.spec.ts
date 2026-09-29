@@ -20,10 +20,10 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('counter-app');
   });
 
-  it('should render title', () => {
+  it('should render the counter component', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, counter-app');
+    expect(compiled.querySelector('app-counter')).toBeTruthy();
   });
 });
