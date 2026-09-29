@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { CounterService } from './counter.service';
+import { CounterAction, CounterService } from './counter.service';
 
 describe('CounterService', () => {
   let service: CounterService;
@@ -82,7 +82,7 @@ describe('CounterService', () => {
     const countBefore = service.count();
     const clickCountBefore = service.clickCount();
 
-    service.dispatch('NOT_A_REAL_ACTION' as any);
+    service.dispatch('NOT_A_REAL_ACTION' as unknown as CounterAction);
 
     expect(service.count()).toBe(countBefore);
     expect(service.clickCount()).toBe(clickCountBefore);
@@ -94,7 +94,7 @@ describe('CounterService', () => {
     const countBefore = service.count();
     const clickCountBefore = service.clickCount();
 
-    service.dispatch(undefined as any);
+    service.dispatch(undefined);
 
     expect(service.count()).toBe(countBefore);
     expect(service.clickCount()).toBe(clickCountBefore);
@@ -102,9 +102,9 @@ describe('CounterService', () => {
 
   it('unrecognized actions interleaved with recognized ones never increment clickCount() (R-0009)', () => {
     service.dispatch('INCREMENT'); // c=1, cc=1
-    service.dispatch('BOGUS' as any); // no-op
+    service.dispatch('BOGUS' as unknown as CounterAction); // no-op
     service.dispatch('INCREMENT'); // c=2, cc=2
-    service.dispatch(undefined as any); // no-op
+    service.dispatch(undefined); // no-op
     service.dispatch('ADD_FOUR'); // c=6, cc=3
 
     expect(service.count()).toBe(6);
