@@ -35,6 +35,27 @@ describe('CounterComponent', () => {
     expect(value.style.color).toBe('black');
   });
 
+  it('displays the value in black at the exact count()===0 boundary', () => {
+    const fixture = createFixture();
+    fixture.detectChanges();
+
+    const value = fixture.nativeElement.querySelector('#d');
+    expect(value.textContent.trim()).toBe('0');
+    expect(value.style.color).toBe('black');
+  });
+
+  it('displays the value in black at the exact count()===10 boundary (not red)', () => {
+    const fixture = createFixture();
+    for (let i = 0; i < 10; i++) {
+      service.dispatch('INCREMENT');
+    }
+    fixture.detectChanges();
+
+    const value = fixture.nativeElement.querySelector('#d');
+    expect(value.textContent.trim()).toBe('10');
+    expect(value.style.color).toBe('black');
+  });
+
   it('displays the value in red when count() is greater than 10', () => {
     const fixture = createFixture();
     for (let i = 0; i < 11; i++) {
