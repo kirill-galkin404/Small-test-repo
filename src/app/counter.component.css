@@ -1,0 +1,26 @@
+.counter__value {
+  font-size: 40px;
+  font-family: arial;
+  background-color: var(--color-value-bg);
+  display: inline-block;
+  padding: 4px 12px;
+}
+
+.counter__btn {
+  padding: 10px;
+}
+
+.counter__btn--increment {
+  background: var(--color-btn-increment);
+  color: var(--color-btn-fg);
+}
+
+.counter__btn--decrement {
+  background: var(--color-btn-decrement);
+  color: var(--color-btn-fg);
+}
+
+.counter__btn--reset {
+  background: var(--color-btn-reset);
+  color: var(--color-btn-fg);
+}

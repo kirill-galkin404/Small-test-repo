@@ -1,0 +1,39 @@
+<div id="counter" class="counter">
+  <h1 id="ttl">Counter ({{ clickCount() }} clicks)</h1>
+  <p id="d" class="counter__value" [style.color]="valueColor()">{{ count() }}</p>
+  <button
+    type="button"
+    class="counter__btn counter__btn--increment"
+    (click)="counterService.dispatch('INCREMENT')"
+  >
+    +
+  </button>
+  <button
+    type="button"
+    class="counter__btn counter__btn--decrement"
+    (click)="counterService.dispatch('DECREMENT')"
+  >
+    -
+  </button>
+  <button
+    type="button"
+    class="counter__btn counter__btn--reset"
+    (click)="counterService.dispatch('RESET')"
+  >
+    reset
+  </button>
+  <button
+    type="button"
+    class="counter__btn counter__btn--add-four"
+    (click)="counterService.dispatch('ADD_FOUR')"
+  >
+    +4
+  </button>
+  <button
+    type="button"
+    class="counter__btn counter__btn--double"
+    (click)="counterService.dispatch('DOUBLE')"
+  >
+    x2
+  </button>
+</div>
