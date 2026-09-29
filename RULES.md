@@ -80,11 +80,12 @@ ESLint owns code-quality/correctness rules, Prettier owns formatting.
 
 ## 2. Behavior contract
 
-This restates, as enforceable rules, the behavior captured in
-`legacy-contract/contract.md` and verified executably by
-`legacy-contract/harness.js` (`node legacy-contract/harness.js`) against the
-original `counter.js`. The rewrite (and any future change) MUST preserve
-every rule below.
+This restates, as enforceable rules, the behavior originally captured (before
+the Angular rewrite) in a legacy characterization harness that verified it
+executably against the original `counter.js`. That harness has since been
+retired now that the same contract is enforced by
+`src/app/counter.service.spec.ts` and `src/app/counter.component.spec.ts`.
+The rewrite (and any future change) MUST preserve every rule below.
 
 There are two pieces of state to preserve conceptually:
 
