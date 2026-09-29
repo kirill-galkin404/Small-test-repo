@@ -1,6 +1,9 @@
 .counter__value {
   font-size: 40px;
   font-family: arial;
+  background-color: var(--color-value-bg);
+  display: inline-block;
+  padding: 4px 12px;
 }
 
 .counter__btn {
@@ -8,16 +11,16 @@
 }
 
 .counter__btn--increment {
-  background: green;
-  color: white;
+  background: var(--color-btn-increment);
+  color: var(--color-btn-fg);
 }
 
 .counter__btn--decrement {
-  background: red;
-  color: white;
+  background: var(--color-btn-decrement);
+  color: var(--color-btn-fg);
 }
 
 .counter__btn--reset {
-  background: gray;
-  color: white;
+  background: var(--color-btn-reset);
+  color: var(--color-btn-fg);
 }
