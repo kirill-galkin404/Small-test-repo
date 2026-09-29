@@ -1,1 +1,48 @@
 /* You can add global styles to this file, and also import other style files */
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-value-bg: #f2f2f2;
+  --color-btn-fg: #ffffff;
+  --color-btn-increment: green;
+  --color-btn-decrement: red;
+  --color-btn-reset: gray;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1b1b1f;
+    --color-text: #f0f0f0;
+    --color-value-bg: #f2f2f2;
+    --color-btn-fg: #ffffff;
+    --color-btn-increment: #2e7d32;
+    --color-btn-decrement: #c62828;
+    --color-btn-reset: #757575;
+  }
+}
+
+:root[data-theme='dark'] {
+  --color-bg: #1b1b1f;
+  --color-text: #f0f0f0;
+  --color-value-bg: #f2f2f2;
+  --color-btn-fg: #ffffff;
+  --color-btn-increment: #2e7d32;
+  --color-btn-decrement: #c62828;
+  --color-btn-reset: #757575;
+}
+
+:root[data-theme='light'] {
+  --color-bg: #ffffff;
+  --color-text: #111111;
+  --color-value-bg: #f2f2f2;
+  --color-btn-fg: #ffffff;
+  --color-btn-increment: green;
+  --color-btn-decrement: red;
+  --color-btn-reset: gray;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
