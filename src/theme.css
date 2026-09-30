@@ -25,8 +25,8 @@
   --btn-double-fg: white;
 
   /* Value display states */
-  --value-positive-high: blue;
-  --value-negative: red;
+  --value-positive-high: red;
+  --value-negative: blue;
   --value-neutral: black;
 }
 
@@ -46,8 +46,8 @@
     --btn-double-bg: #ab47bc;
     --btn-double-fg: #1a0a1f;
 
-    --value-positive-high: #64b5f6;
-    --value-negative: #ef5350;
+    --value-positive-high: #ef5350;
+    --value-negative: #64b5f6;
     --value-neutral: #f0f0f0;
   }
 }
@@ -67,8 +67,8 @@
   --btn-double-bg: #ab47bc;
   --btn-double-fg: #1a0a1f;
 
-  --value-positive-high: #64b5f6;
-  --value-negative: #ef5350;
+  --value-positive-high: #ef5350;
+  --value-negative: #64b5f6;
   --value-neutral: #f0f0f0;
 }
 
@@ -87,8 +87,8 @@
   --btn-double-bg: #6a1b9a;
   --btn-double-fg: white;
 
-  --value-positive-high: blue;
-  --value-negative: red;
+  --value-positive-high: red;
+  --value-negative: blue;
   --value-neutral: black;
 }
 
