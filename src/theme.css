@@ -1,0 +1,145 @@
+/* Light/dark theming via CSS custom properties.
+ *
+ * Token sets are defined twice: once for the automatic OS preference
+ * (@media (prefers-color-scheme: dark)) and once for an explicit
+ * override via a [data-theme="dark"|"light"] attribute on an ancestor
+ * element (typically <html> or <body>), which a later theme-toggle
+ * step can set to win over the OS preference either way.
+ */
+
+:root {
+  /* Page */
+  --bg: #ffffff;
+  --fg: #111111;
+
+  /* Buttons: INCREMENT / DECREMENT / RESET / ADD_FOUR / DOUBLE */
+  --btn-increment-bg: green;
+  --btn-increment-fg: white;
+  --btn-decrement-bg: red;
+  --btn-decrement-fg: white;
+  --btn-reset-bg: gray;
+  --btn-reset-fg: white;
+  --btn-add-four-bg: #1565c0; /* blue */
+  --btn-add-four-fg: white;
+  --btn-double-bg: #6a1b9a; /* purple */
+  --btn-double-fg: white;
+
+  /* Value display states */
+  --value-positive-high: blue;
+  --value-negative: red;
+  --value-neutral: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #121212;
+    --fg: #f0f0f0;
+
+    --btn-increment-bg: #2e7d32;
+    --btn-increment-fg: #ffffff;
+    --btn-decrement-bg: #c62828;
+    --btn-decrement-fg: #ffffff;
+    --btn-reset-bg: #616161;
+    --btn-reset-fg: #ffffff;
+    --btn-add-four-bg: #42a5f5;
+    --btn-add-four-fg: #0d1b2a;
+    --btn-double-bg: #ab47bc;
+    --btn-double-fg: #1a0a1f;
+
+    --value-positive-high: #64b5f6;
+    --value-negative: #ef5350;
+    --value-neutral: #f0f0f0;
+  }
+}
+
+[data-theme='dark'] {
+  --bg: #121212;
+  --fg: #f0f0f0;
+
+  --btn-increment-bg: #2e7d32;
+  --btn-increment-fg: #ffffff;
+  --btn-decrement-bg: #c62828;
+  --btn-decrement-fg: #ffffff;
+  --btn-reset-bg: #616161;
+  --btn-reset-fg: #ffffff;
+  --btn-add-four-bg: #42a5f5;
+  --btn-add-four-fg: #0d1b2a;
+  --btn-double-bg: #ab47bc;
+  --btn-double-fg: #1a0a1f;
+
+  --value-positive-high: #64b5f6;
+  --value-negative: #ef5350;
+  --value-neutral: #f0f0f0;
+}
+
+[data-theme='light'] {
+  --bg: #ffffff;
+  --fg: #111111;
+
+  --btn-increment-bg: green;
+  --btn-increment-fg: white;
+  --btn-decrement-bg: red;
+  --btn-decrement-fg: white;
+  --btn-reset-bg: gray;
+  --btn-reset-fg: white;
+  --btn-add-four-bg: #1565c0;
+  --btn-add-four-fg: white;
+  --btn-double-bg: #6a1b9a;
+  --btn-double-fg: white;
+
+  --value-positive-high: blue;
+  --value-negative: red;
+  --value-neutral: black;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+#d {
+  font-size: 40px;
+  font-family: arial;
+}
+
+button[data-action='INCREMENT'] {
+  padding: 10px;
+  background: var(--btn-increment-bg);
+  color: var(--btn-increment-fg);
+}
+
+button[data-action='DECREMENT'] {
+  padding: 10px;
+  background: var(--btn-decrement-bg);
+  color: var(--btn-decrement-fg);
+}
+
+button[data-action='RESET'] {
+  padding: 10px;
+  background: var(--btn-reset-bg);
+  color: var(--btn-reset-fg);
+}
+
+button[data-action='ADD_FOUR'] {
+  padding: 10px;
+  background: var(--btn-add-four-bg);
+  color: var(--btn-add-four-fg);
+}
+
+button[data-action='DOUBLE'] {
+  padding: 10px;
+  background: var(--btn-double-bg);
+  color: var(--btn-double-fg);
+}
+
+.value--positive-high {
+  color: var(--value-positive-high);
+}
+
+.value--negative {
+  color: var(--value-negative);
+}
+
+.value--neutral {
+  color: var(--value-neutral);
+}
