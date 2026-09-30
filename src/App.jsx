@@ -1,5 +1,11 @@
 import { Counter } from './Counter.jsx'
+import { ThemeToggle } from './ThemeToggle.jsx'
 
 export function App() {
-  return <Counter />
+  return (
+    <>
+      <ThemeToggle />
+      <Counter />
+    </>
+  )
 }
