@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Reset button tests</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <!-- The #counter markup below is copied from counter.html; keep it in sync with that file. -->
+    <div id="counter">
+      <h1 id="ttl">Counter</h1>
+      <p id="d">0</p>
+      <button data-action="INCREMENT">+</button>
+      <button data-action="DECREMENT">-</button>
+      <button data-action="RESET">reset</button>
+      <button data-action="ADD_FOUR">+4</button>
+      <button data-action="DOUBLE">x2</button>
+    </div>
+
+    <!-- Results live outside #counter so they never reach the delegated click handler. -->
+    <div id="results">
+      <h2>Reset tests</h2>
+      <p id="summary" data-status="running">running</p>
+      <ul id="log"></ul>
+    </div>
+
+    <script src="counter.js"></script>
+    <script>
+      (function () {
+        var passed = 0;
+        var failed = 0;
+        var ran = 0;
+        var MIN_CASES = 4;
+        var summary = document.getElementById("summary");
+        var log = document.getElementById("log");
+
+        function report(ok, name, detail) {
+          var li = document.createElement("li");
+          li.textContent = (ok ? "PASS: " : "FAIL: ") + name + (ok ? "" : " (" + detail + ")");
+          log.appendChild(li);
+        }
+
+        function assert(cond, name, detail) {
+          if (cond) { passed++; } else { failed++; }
+          report(cond, name, detail);
+        }
+
+        function equal(actual, expected, name) {
+          assert(actual === expected, name,
+            "expected " + JSON.stringify(expected) + ", got " + JSON.stringify(actual));
+        }
+
+        function resetButton() {
+          return document.querySelector('#counter [data-action="RESET"]');
+        }
+
+        function incrementButton() {
+          return document.querySelector('#counter [data-action="INCREMENT"]');
+        }
+
+        // Start every case from known state, then click the real RESET button.
+        function setup(cValue, ccValue) {
+          window.c = cValue;
+          window.cc = ccValue;
+          render();
+        }
+
+        function resetCase(name, startC, expectedColorBefore) {
+          ran++;
+          setup(startC, 0);
+          equal(document.getElementById("d").style.color, expectedColorBefore, name + ": colour before reset");
+          resetButton().click();
+          equal(window.c, 0, name + ": c is 0");
+          equal(document.getElementById("d").textContent, "0", name + ": #d text is 0");
+          equal(document.getElementById("d").style.color, "black", name + ": colour is black");
+        }
+
+        function run() {
+          resetCase("reset from 7", 7, "black");
+          resetCase("reset from 11+ (red)", 15, "red");
+          resetCase("reset from negative (blue)", -3, "blue");
+
+          ran++;
+          setup(7, 4);
+          resetButton().click();
+          equal(window.cc, 5, "reset with cc 4: cc is 5");
+          equal(document.getElementById("ttl").textContent, "Counter (5 clicks)", "reset with cc 4: title");
+          equal(window.c, 0, "reset with cc 4: c is 0");
+
+          ran++;
+          setup(7, 4);
+          resetButton().click();
+          incrementButton().click();
+          equal(window.c, 1, "increment after reset: c is 1");
+          equal(document.getElementById("d").textContent, "1", "increment after reset: #d text is 1");
+        }
+
+        try {
+          run();
+          summary.textContent = "passed " + passed + ", failed " + failed;
+          summary.setAttribute("data-status", failed === 0 && ran >= MIN_CASES && passed > 0 ? "pass" : "fail");
+        } catch (e) {
+          summary.textContent = "passed " + passed + ", failed " + (failed + 1) + " (error: " + e + ")";
+          summary.setAttribute("data-status", "fail");
+        }
+      })();
+    </script>
+  </body>
+</html>
