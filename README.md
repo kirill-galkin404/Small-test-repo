@@ -22,5 +22,6 @@ results. When every assertion passes, the page's `<body>` gets
 `data-result="pass"` (otherwise `data-result="fail"`), and a log is shown on the
 page. No tooling is needed — no build step, no `package.json`, no test runner —
 which is consistent with the single-file approach in the ADR above. For a
-headless run:
-`chromium --headless --dump-dom file://$PWD/tests/counter.test.html | grep data-result`.
+headless run (the dumped page also contains the script source, so match the
+`<body>` tag only):
+`chromium --headless --dump-dom file://$PWD/tests/counter.test.html | grep '<body data-result'`.
