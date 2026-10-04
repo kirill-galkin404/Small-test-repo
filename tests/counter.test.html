@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>counter.js tests</title>
+  </head>
+  <body>
+    <!-- Open this page in a browser. On success <body> gets the data-result
+         attribute set to the word pass; on any failure it is set to fail. -->
+
+    <!-- Copy of the #counter markup in ../counter.html (lines 7-15). Keep identical. -->
+    <div id="counter">
+      <h1 id="ttl">Counter</h1>
+      <p id="d">0</p>
+      <button data-action="INCREMENT">+</button>
+      <button data-action="DECREMENT">-</button>
+      <button data-action="RESET">reset</button>
+      <button data-action="ADD_FOUR">+4</button>
+      <button data-action="DOUBLE">x2</button>
+    </div>
+
+    <pre id="test-log"></pre>
+
+    <script src="../counter.js"></script>
+    <script>
+      (function () {
+        var log = [];
+
+        function fail(msg) {
+          throw new Error(msg);
+        }
+
+        function click(action) {
+          var btn = document.querySelector('#counter button[data-action="' + action + '"]');
+          if (!btn) { fail("missing button " + action); }
+          btn.click();
+        }
+
+        function value() {
+          return document.getElementById("d").textContent;
+        }
+
+        function clicks() {
+          var m = /^Counter \((\d+) clicks\)$/.exec(document.getElementById("ttl").textContent);
+          if (!m) { fail("unexpected title: " + document.getElementById("ttl").textContent); }
+          return parseInt(m[1], 10);
+        }
+
+        function expectEqual(actual, expected, label) {
+          if (String(actual) !== String(expected)) {
+            fail(label + ": expected " + expected + " but got " + actual);
+          }
+          log.push("ok - " + label);
+        }
+
+        function color() {
+          return document.getElementById("d").style.color;
+        }
+
+        try {
+          var buttons = document.querySelectorAll('#counter button[data-action="DECREMENT"]');
+          expectEqual(buttons.length, 1, "exactly one DECREMENT button");
+
+          // Decrement: reset, then go below zero one step at a time.
+          click("RESET");
+          expectEqual(value(), 0, "RESET gives 0");
+          var before = clicks();
+          click("DECREMENT");
+          expectEqual(value(), -1, "DECREMENT from 0 gives -1");
+          expectEqual(color(), "blue", "negative value is blue");
+          click("DECREMENT");
+          expectEqual(value(), -2, "DECREMENT again gives -2");
+          click("DECREMENT");
+          expectEqual(value(), -3, "DECREMENT again gives -3");
+          expectEqual(clicks(), before + 3, "each DECREMENT click raises the title click count by 1");
+
+          // Decrement from a positive value.
+          click("RESET");
+          click("ADD_FOUR");
+          click("DECREMENT");
+          expectEqual(value(), 3, "DECREMENT from 4 gives 3");
+          expectEqual(color(), "black", "value 3 is black");
+
+          // Increment.
+          click("RESET");
+          before = clicks();
+          click("INCREMENT");
+          expectEqual(value(), 1, "INCREMENT from 0 gives 1");
+          expectEqual(clicks(), before + 1, "INCREMENT raises the click count by 1");
+
+          // Reset from a non-zero value.
+          click("ADD_FOUR");
+          click("RESET");
+          expectEqual(value(), 0, "RESET from 5 gives 0");
+
+          // +4.
+          click("ADD_FOUR");
+          expectEqual(value(), 4, "ADD_FOUR from 0 gives 4");
+
+          // x2.
+          click("DOUBLE");
+          expectEqual(value(), 8, "DOUBLE from 4 gives 8");
+          click("DOUBLE");
+          expectEqual(value(), 16, "DOUBLE from 8 gives 16");
+          expectEqual(color(), "red", "value above 10 is red");
+
+          click("RESET");
+          click("DECREMENT");
+          click("DOUBLE");
+          expectEqual(value(), -2, "DOUBLE from -1 gives -2");
+
+          click("RESET");
+          document.body.setAttribute("data-result", "pass");
+        } catch (e) {
+          log.push("FAIL - " + e.message);
+          document.body.setAttribute("data-result", "fail");
+        }
+        document.getElementById("test-log").textContent = log.join("\n");
+      })();
+    </script>
+  </body>
+</html>
