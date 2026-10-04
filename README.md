@@ -13,3 +13,12 @@
 See [docs/adr/0001-single-file-vs-build-step.md](docs/adr/0001-single-file-vs-build-step.md)
 for the architectural decision on keeping `counter.html` single-file vs.
 introducing a build step, before making any structural changes.
+
+## Running the tests
+
+Open `tests/counter.test.html` in a browser. The page loads `counter.js`
+against a copy of the counter markup, clicks each button (including the
+Decrement `-` button, which may take the count below zero) and checks the
+results. When every assertion passes, `<body>` gets `data-result="pass"`
+(`data-result="fail"` otherwise); per-assertion output is shown on the page.
+No tooling, build step or `package.json` is needed.
