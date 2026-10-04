@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>counter.js tests</title>
+  </head>
+  <body>
+    <!-- Copy of the #counter markup from ../counter.html -->
+    <div id="counter">
+      <h1 id="ttl">Counter</h1>
+      <p id="d">0</p>
+      <button data-action="INCREMENT">+</button>
+      <button data-action="DECREMENT">-</button>
+      <button data-action="RESET">reset</button>
+      <button data-action="ADD_FOUR">+4</button>
+      <button data-action="DOUBLE">x2</button>
+    </div>
+
+    <pre id="log"></pre>
+
+    <script src="../counter.js"></script>
+    <script>
+      // Open this page in a browser: <body data-result> becomes "pass" or "fail".
+      (function () {
+        var log = document.getElementById("log");
+        var counter = document.getElementById("counter");
+        var d = document.getElementById("d");
+        var ttl = document.getElementById("ttl");
+
+        function click(action) {
+          var btn = counter.querySelector('[data-action="' + action + '"]');
+          if (!btn) { throw new Error("missing button " + action); }
+          btn.click();
+        }
+        function clicks() {
+          return Number(/\((\d+) clicks\)/.exec(ttl.textContent)[1]);
+        }
+        function eq(actual, expected, label) {
+          if (actual !== expected) {
+            throw new Error(label + ": expected " + expected + " but got " + actual);
+          }
+          log.textContent += "ok - " + label + "\n";
+        }
+
+        try {
+          eq(counter.querySelectorAll('[data-action="DECREMENT"]').length, 1, "exactly one DECREMENT button");
+
+          // DECREMENT: from 0 goes below zero, one lower each click, no floor.
+          click("RESET");
+          eq(d.textContent, "0", "RESET gives 0");
+          var before = clicks();
+          var expected = [-1, -2, -3];
+          for (var i = 0; i < expected.length; i++) {
+            click("DECREMENT");
+            eq(d.textContent, String(expected[i]), "DECREMENT click " + (i + 1) + " gives " + expected[i]);
+            eq(clicks(), before + i + 1, "title click count after DECREMENT " + (i + 1));
+          }
+          eq(d.style.color, "blue", "negative value is blue");
+
+          // INCREMENT
+          click("RESET");
+          click("INCREMENT");
+          eq(d.textContent, "1", "INCREMENT gives 1");
+          click("INCREMENT");
+          eq(d.textContent, "2", "INCREMENT again gives 2");
+          eq(d.style.color, "black", "0..10 is black");
+
+          // DECREMENT back from a positive value
+          click("DECREMENT");
+          eq(d.textContent, "1", "DECREMENT from 2 gives 1");
+
+          // ADD_FOUR
+          click("RESET");
+          click("ADD_FOUR");
+          eq(d.textContent, "4", "ADD_FOUR gives 4");
+
+          // DOUBLE
+          click("DOUBLE");
+          eq(d.textContent, "8", "DOUBLE of 4 gives 8");
+          click("DOUBLE");
+          eq(d.textContent, "16", "DOUBLE of 8 gives 16");
+          eq(d.style.color, "red", "above 10 is red");
+
+          // RESET from any value
+          click("RESET");
+          eq(d.textContent, "0", "RESET gives 0 from 16");
+          eq(d.style.color, "black", "0 is black");
+
+          document.body.setAttribute("data-result", "pass");
+        } catch (e) {
+          log.textContent += "FAIL - " + e.message + "\n";
+          document.body.setAttribute("data-result", "fail");
+        }
+      })();
+    </script>
+  </body>
+</html>
