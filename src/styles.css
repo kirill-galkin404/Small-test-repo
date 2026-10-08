@@ -1,0 +1,66 @@
+:root {
+  --bg: #ffffff;
+  --text: #000000;
+  --btn-fg: #ffffff;
+  --btn-increment-bg: #1b5e20;
+  --btn-decrement-bg: #b00020;
+  --btn-reset-bg: #595959;
+  --btn-add-four-bg: #0b57d0;
+  --btn-double-bg: #6a1b9a;
+  --value-neutral: #000000;
+  --value-high: #b00020;
+  --value-low: #0b57d0;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: arial, sans-serif;
+}
+
+.value {
+  font-size: 40px;
+  font-family: arial, sans-serif;
+}
+
+.value--neutral {
+  color: var(--value-neutral);
+}
+
+.value--high {
+  color: var(--value-high);
+}
+
+.value--low {
+  color: var(--value-low);
+}
+
+.btn {
+  padding: 10px;
+  margin-right: 4px;
+  border: 0;
+  color: var(--btn-fg);
+  cursor: pointer;
+}
+
+.btn--increment {
+  background: var(--btn-increment-bg);
+}
+
+.btn--decrement {
+  background: var(--btn-decrement-bg);
+}
+
+.btn--reset {
+  background: var(--btn-reset-bg);
+}
+
+.btn--add-four {
+  background: var(--btn-add-four-bg);
+}
+
+.btn--double {
+  background: var(--btn-double-bg);
+}
