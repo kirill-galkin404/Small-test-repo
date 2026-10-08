@@ -1,4 +1,5 @@
 import { useReducer } from 'react'
+import { useTheme } from './theme.js'
 import { ACTIONS, initialState, reducer, valueTone, clickLabel } from './logic.js'
 
 const BUTTONS = [
@@ -11,6 +12,7 @@ const BUTTONS = [
 
 export default function Counter() {
   const [state, dispatch] = useReducer(reducer, initialState)
+  const [theme, toggleTheme] = useTheme()
 
   return (
     <div id="counter">
@@ -28,6 +30,9 @@ export default function Counter() {
           {label}
         </button>
       ))}
+      <button type="button" className="btn btn--toggle" onClick={toggleTheme}>
+        {theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'}
+      </button>
     </div>
   )
 }
