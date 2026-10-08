@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 
 export const THEME_STORAGE_KEY = 'theme'
 
@@ -35,7 +35,7 @@ function storeTheme(theme) {
 export function useTheme() {
   const [theme, setTheme] = useState(() => readStoredTheme() ?? systemTheme())
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
