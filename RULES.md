@@ -1,6 +1,6 @@
 # Counter rules
 
-Generated from `src/rules.js` (the single source of truth). `src/rules-doc.test.js` fails if this file drifts from the module.
+Hand-maintained from `src/rules.js` (the single source of truth). `src/rules-doc.test.js` partially checks this file against the module (action names, rule keys, thresholds, title wording); it does not verify every rule statement.
 
 Actions: `INCREMENT`, `DECREMENT`, `RESET`, `ADD_FOUR`, `DOUBLE`.
 Thresholds: `thresholds.high` = 10, `thresholds.low` = 0.

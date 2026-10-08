@@ -37,7 +37,7 @@ src/theme.js             useTheme hook and theme helpers
 src/styles.css           Styles, including light and dark theme tokens
 src/*.test.js(x)         Vitest tests (rules, theme, component, RULES.md drift check)
 vite.config.js           Vite and Vitest configuration (jsdom, base './')
-RULES.md                 Business rules, generated from src/rules.js
+RULES.md                 Business rules, kept in sync with src/rules.js
 docs/adr/                Architecture decision records
 ```
 
@@ -52,7 +52,7 @@ docs/adr/                Architecture decision records
 - The previous global variables `c` and `cc` no longer exist. The value and
   click count are fields of the reducer state.
 - The full rules, thresholds and quirk decisions are in [RULES.md](RULES.md).
-  `src/rules-doc.test.js` fails if that file drifts from `src/rules.js`.
+  `src/rules-doc.test.js` partially checks that file against `src/rules.js`.
 
 ## Theme
 
