@@ -1,0 +1,63 @@
+:root {
+  color-scheme: dark;
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --tone-high: #ff6b6b;
+  --tone-neutral: #e6edf3;
+  --tone-low: #6cb6ff;
+  --btn-fg: #0d1117;
+  --btn-increment: #3fb950;
+  --btn-decrement: #ff7b72;
+  --btn-reset: #8b949e;
+  --btn-add-four: #d2a8ff;
+  --btn-double: #e3b341;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: arial;
+}
+
+#d {
+  font-size: 40px;
+}
+
+.value--high {
+  color: var(--tone-high);
+}
+
+.value--low {
+  color: var(--tone-low);
+}
+
+.value--neutral {
+  color: var(--tone-neutral);
+}
+
+button {
+  padding: 10px;
+  color: var(--btn-fg);
+  border: 0;
+  cursor: pointer;
+}
+
+.btn-increment {
+  background-color: var(--btn-increment);
+}
+
+.btn-decrement {
+  background-color: var(--btn-decrement);
+}
+
+.btn-reset {
+  background-color: var(--btn-reset);
+}
+
+.btn-add-four {
+  background-color: var(--btn-add-four);
+}
+
+.btn-double {
+  background-color: var(--btn-double);
+}
