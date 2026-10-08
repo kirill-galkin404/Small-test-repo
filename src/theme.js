@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 
 const DARK_QUERY = '(prefers-color-scheme: dark)'
 
@@ -13,7 +13,7 @@ export function getInitialTheme() {
 export function useTheme() {
   const [theme, setTheme] = useState(getInitialTheme)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     document.documentElement.dataset.theme = theme
   }, [theme])
 
