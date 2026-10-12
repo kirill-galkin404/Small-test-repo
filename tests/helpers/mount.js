@@ -1,34 +1,24 @@
-import { readFileSync } from 'node:fs';
-import { resolve } from 'node:path';
-import { vi } from 'vitest';
+import React from 'react';
+import { act, cleanup as rtlCleanup, fireEvent, render } from '@testing-library/react';
+import Counter from '../../src/Counter.jsx';
 
-const root = resolve(import.meta.dirname, '../..');
-const html = readFileSync(resolve(root, 'counter.html'), 'utf8');
-const script = readFileSync(resolve(root, 'counter.js'), 'utf8');
+globalThis.IS_REACT_ACT_ENVIRONMENT = true;
 
-const bodyMarkup = html
-  .match(/<body[^>]*>([\s\S]*)<\/body>/i)[1]
-  .replace(/<script[\s\S]*?<\/script>/gi, '');
-
-let logSpies = [];
-
-// Mounts a fresh legacy counter (counter.html + counter.js, unmodified) into document.body.
+// Mounts a fresh React <Counter /> into document.body.
 export function mount() {
   cleanup();
-  logSpies = ['log', 'warn'].map((m) => vi.spyOn(console, m).mockImplementation(() => {}));
-  document.body.innerHTML = bodyMarkup;
-  // Own function scope per mount so counter.js's top-level state is isolated.
-  new Function(script)();
+  render(React.createElement(Counter));
   return document.body;
 }
 
-// Clicks an element the way a user would.
+// Clicks an element the way a user would, flushing React state updates.
 export function click(element) {
-  element.click();
+  act(() => {
+    fireEvent.click(element);
+  });
 }
 
 export function cleanup() {
+  rtlCleanup();
   document.body.innerHTML = '';
-  logSpies.forEach((s) => s.mockRestore());
-  logSpies = [];
 }
