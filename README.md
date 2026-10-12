@@ -66,7 +66,7 @@ There is no shared-tail shortcut between cases.
 - `src/` — `Counter.jsx`, `reducer.js`, `main.jsx`.
 - `tests/` — Vitest suites: `reducer.test.js`, `Counter.test.jsx`,
   `counter.behaviour.test.js`, `styles.test.js`.
-- `tests/helpers/mount.js` — the shared behaviour suite used by the DOM tests.
+- `tests/helpers/mount.js` — the mount helper used by the behaviour suite.
 - `vite.config.js` — React plugin, relative `base`, and Vitest settings.
 - `docs/adr/` — architecture decision records.
 

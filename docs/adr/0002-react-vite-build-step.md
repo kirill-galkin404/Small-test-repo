@@ -25,12 +25,13 @@ code is:
 We choose **Fork B: introduce a build step**: React, Vite, ES modules and a
 `package.json`, with tests run by Vitest.
 
-- `index.html` becomes the Vite entry point (`base: './'`). It gains a
-  `charset` meta tag and a `<title>`.
+- `index.html` becomes the Vite entry point (`base: './'`). The meta refresh
+  redirect is removed and the page gains a `#root` element and a module script.
 - `counter.html` is kept as a redirect to `index.html`, placed in `public/`
   so that existing links keep working.
-- Behaviour is pinned by a shared DOM test suite that runs against both the
-  legacy implementation and the React implementation.
+- Behaviour was pinned first by a black-box DOM suite written against the
+  legacy page; its mount helper was then repointed at the React component.
+  The suite now runs against the React implementation only.
 - The `console.log`/`console.warn` tracing in the legacy `dispatch` is
   intentionally dropped in the React reducer.
 
