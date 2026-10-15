@@ -1,0 +1,81 @@
+:root {
+  color-scheme: dark;
+  --color-bg: #121212;
+  --color-surface: #1e1e1e;
+  --color-text: #e8e8e8;
+  --color-default: #e8e8e8;
+  --color-high: #ff8a80;
+  --color-negative: #82b1ff;
+  --color-btn-text: #ffffff;
+  --color-btn-increment: #1b5e20;
+  --color-btn-decrement: #b71c1c;
+  --color-btn-reset: #424242;
+  --color-btn-add-four: #0d47a1;
+  --color-btn-double: #6a1b9a;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.counter {
+  padding: 16px;
+}
+
+.counter__title {
+  color: var(--color-text);
+}
+
+.counter__value {
+  font-size: 40px;
+  margin: 16px 0;
+}
+
+.counter__value--default {
+  color: var(--color-default);
+}
+
+.counter__value--high {
+  color: var(--color-high);
+}
+
+.counter__value--negative {
+  color: var(--color-negative);
+}
+
+.btn {
+  padding: 10px;
+  margin-right: 4px;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--color-btn-text);
+}
+
+.btn--increment {
+  background: var(--color-btn-increment);
+  color: var(--color-btn-text);
+}
+
+.btn--decrement {
+  background: var(--color-btn-decrement);
+  color: var(--color-btn-text);
+}
+
+.btn--reset {
+  background: var(--color-btn-reset);
+  color: var(--color-btn-text);
+}
+
+.btn--add-four {
+  background: var(--color-btn-add-four);
+  color: var(--color-btn-text);
+}
+
+.btn--double {
+  background: var(--color-btn-double);
+  color: var(--color-btn-text);
+}
