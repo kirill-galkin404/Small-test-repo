@@ -28,3 +28,20 @@ There is no build. Open `counter.html` in a web browser, either by double-clicki
 | `style.css` | Styling for the value display and some buttons. |
 | `index.html` | Redirects to `counter.html`. |
 | `docs/adr/0001-single-file-vs-build-step.md` | Architecture decision to avoid a build step. |
+
+## Counter behaviour
+
+Each button sends an action to `dispatch` in `counter.js`. The value starts at 0 and no bounds are applied.
+
+| Action | Button | Effect |
+| --- | --- | --- |
+| `INCREMENT` | `+` | Adds 1 |
+| `DECREMENT` | `-` | Subtracts 1 |
+| `RESET` | `reset` | Sets the value to 0 |
+| `ADD_FOUR` | `+4` | Adds 4 |
+| `DOUBLE` | `x2` | Doubles the value |
+
+- **Click count:** every recognized action, including reset, adds one to the click count. Unrecognized actions are ignored and not counted. The page title shows it as `Counter (N clicks)`.
+- **Colours:** the value is red above 10, blue below 0, and black otherwise.
+- **Styling:** `style.css` styles only the value display and the `+`, `-` and `reset` buttons. The `+4` and `x2` buttons use the browser default look.
+- **Reload:** state lives only in memory, so the value and click count reset when the page is reloaded.
