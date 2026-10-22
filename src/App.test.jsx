@@ -13,9 +13,9 @@ const button = (action) => document.querySelector(`[data-action="${action}"]`);
 const click = (action) => fireEvent.click(button(action));
 
 // jsdom does not load src/style.css, so tones are asserted through data-tone
-// plus a check that the stylesheet maps each tone to the legacy colour.
+// plus a check that the stylesheet maps each tone to its colour token.
 const toneColor = (t) =>
-  css.match(new RegExp(`#d\\[data-tone="${t}"\\]\\s*\\{[^}]*color:\\s*(\\w+)`))?.[1];
+  css.match(new RegExp(`#d\\[data-tone="${t}"\\]\\s*\\{[^}]*color:\\s*var\\((--[\\w-]+)\\)`))?.[1];
 
 describe('rendering', () => {
   it('renders the five buttons with data-action and labels', () => {
@@ -31,7 +31,7 @@ describe('rendering', () => {
       expect(button(action)).toHaveTextContent(label);
       expect(button(action).tagName).toBe('BUTTON');
     }
-    expect(document.querySelectorAll('button')).toHaveLength(5);
+    expect(document.querySelectorAll('button[data-action]')).toHaveLength(5);
     expect(document.getElementById('counter')).toBeInTheDocument();
   });
 
@@ -132,10 +132,10 @@ describe('click tally and title', () => {
 });
 
 describe('tones', () => {
-  it('maps tones to the legacy colours in the stylesheet', () => {
-    expect(toneColor('high')).toBe('red');
-    expect(toneColor('low')).toBe('blue');
-    expect(toneColor('neutral')).toBe('black');
+  it('maps tones to colour tokens in the stylesheet', () => {
+    expect(toneColor('high')).toBe('--value-high');
+    expect(toneColor('low')).toBe('--value-low');
+    expect(toneColor('neutral')).toBe('--value-neutral');
   });
 
   it('is neutral at 0', () => {
