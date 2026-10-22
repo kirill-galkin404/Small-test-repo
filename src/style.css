@@ -1,0 +1,90 @@
+:root {
+  --bg: #ffffff;
+  --fg: #000000;
+  --value-neutral: #000000;
+  --value-high: #b71c1c;
+  --value-low: #0d47a1;
+  --btn-text: #ffffff;
+  --btn-increment-bg: #1b5e20;
+  --btn-decrement-bg: #b71c1c;
+  --btn-reset-bg: #4d4d4d;
+  --btn-add-four-bg: #00695c;
+  --btn-double-bg: #6a1b9a;
+  --toggle-bg: #e0e0e0;
+  --toggle-fg: #000000;
+}
+
+:root[data-theme="dark"] {
+  --bg: #121212;
+  --fg: #f5f5f5;
+  --value-neutral: #f5f5f5;
+  --value-high: #ff8a80;
+  --value-low: #82b1ff;
+  --btn-text: #121212;
+  --btn-increment-bg: #81c784;
+  --btn-decrement-bg: #e57373;
+  --btn-reset-bg: #bdbdbd;
+  --btn-add-four-bg: #4db6ac;
+  --btn-double-bg: #ce93d8;
+  --toggle-bg: #333333;
+  --toggle-fg: #f5f5f5;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+#d {
+  font-size: 40px;
+  color: var(--value-neutral);
+  font-family: arial;
+}
+
+#d[data-tone="high"] {
+  color: var(--value-high);
+}
+
+#d[data-tone="low"] {
+  color: var(--value-low);
+}
+
+#d[data-tone="neutral"] {
+  color: var(--value-neutral);
+}
+
+button[data-action="INCREMENT"] {
+  padding: 10px;
+  background: var(--btn-increment-bg);
+  color: var(--btn-text);
+}
+
+button[data-action="DECREMENT"] {
+  padding: 10px;
+  background: var(--btn-decrement-bg);
+  color: var(--btn-text);
+}
+
+button[data-action="RESET"] {
+  padding: 10px;
+  background: var(--btn-reset-bg);
+  color: var(--btn-text);
+}
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: var(--btn-add-four-bg);
+  color: var(--btn-text);
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: var(--btn-double-bg);
+  color: var(--btn-text);
+}
+
+.theme-toggle {
+  padding: 10px;
+  background: var(--toggle-bg);
+  color: var(--toggle-fg);
+}
