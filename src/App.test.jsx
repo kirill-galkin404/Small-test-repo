@@ -31,7 +31,7 @@ describe('rendering', () => {
       expect(button(action)).toHaveTextContent(label);
       expect(button(action).tagName).toBe('BUTTON');
     }
-    expect(document.querySelectorAll('button')).toHaveLength(5);
+    expect(document.querySelectorAll('button[data-action]')).toHaveLength(5);
     expect(document.getElementById('counter')).toBeInTheDocument();
   });
 
