@@ -1,0 +1,47 @@
+#d {
+  font-size: 40px;
+  color: black;
+  font-family: arial;
+}
+
+#d[data-tone="high"] {
+  color: red;
+}
+
+#d[data-tone="low"] {
+  color: blue;
+}
+
+#d[data-tone="neutral"] {
+  color: black;
+}
+
+button[data-action="INCREMENT"] {
+  padding: 10px;
+  background: green;
+  color: white;
+}
+
+button[data-action="DECREMENT"] {
+  padding: 10px;
+  background: red;
+  color: white;
+}
+
+button[data-action="RESET"] {
+  padding: 10px;
+  background: gray;
+  color: white;
+}
+
+button[data-action="ADD_FOUR"] {
+  padding: 10px;
+  background: teal;
+  color: white;
+}
+
+button[data-action="DOUBLE"] {
+  padding: 10px;
+  background: purple;
+  color: white;
+}
