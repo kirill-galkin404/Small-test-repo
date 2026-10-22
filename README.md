@@ -5,8 +5,8 @@ Vitest tests and a light/dark theme.
 
 ## Setup
 
-Requires Node 20.19+ or 22.12+ (the `engines` range declared by the locked
-Vite release in `package-lock.json`).
+Requires Node 22.13+ (the strictest `engines` range among the locked
+dev dependencies: Vitest, jsdom and jest-dom; Vite alone allows 20.19+).
 
 ```
 npm install

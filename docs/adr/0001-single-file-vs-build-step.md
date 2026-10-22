@@ -82,5 +82,6 @@ describe the wiring mechanism as actually implemented: buttons carry a
 Earlier prose described an inline `onclick="doOperation(ACTION.X)"` wiring
 and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
-brings the ADR's description in line with the code. This amendment does not
-change `Status: Accepted` or the Fork A decision itself.
+brings the ADR's description in line with the code. This amendment did not
+change the then-current `Status: Accepted` or the Fork A decision itself
+(the status was later changed to Superseded by ADR 0002).

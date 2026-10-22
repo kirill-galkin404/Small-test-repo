@@ -8,9 +8,8 @@ Accepted. Supersedes [ADR 0001](0001-single-file-vs-build-step.md).
 
 ADR 0001 chose to keep the counter as a single file with no build step, no
 module system and no `package.json`. That decision itself said that a revisit
-should produce a new ADR rather than an ad-hoc change; this is that ADR. Once
-it is accepted, ADR 0001 will be marked Superseded by 0002 (done in a later
-step, not in this draft).
+should produce a new ADR rather than an ad-hoc change; this is that ADR. ADR 0001
+is marked Superseded by this ADR.
 
 The counter is being rewritten as a React app built with Vite, in plain
 JS/JSX (no TypeScript), with Vitest tests and a dark theme. The legacy
