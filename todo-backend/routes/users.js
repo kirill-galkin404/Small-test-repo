@@ -2,6 +2,7 @@ var express = require('express');
 var moment = require('moment');
 var db = require('../lib/db');
 var auth = require('../lib/auth');
+var requireUser = require('../middleware/requireUser');
 var config = require('../config');
 
 var router = express.Router();
@@ -62,19 +63,19 @@ router.post('/login', function (req, res) {
     });
 });
 
-router.post('/logout', auth.requireUser, function (req, res) {
+router.post('/logout', requireUser, function (req, res) {
   var token = req.headers['x-auth-token'] || req.query.token;
   db.run("DELETE FROM tokens WHERE token = '" + token + "'", function () {
     res.send({ ok: true });
   });
 });
 
-router.get('/me', auth.requireUser, function (req, res) {
+router.get('/me', requireUser, function (req, res) {
   var u = req.user;
   res.send({ id: u.id, username: u.username, email: u.email, created_at: u.created_at });
 });
 
-router.put('/me', auth.requireUser, function (req, res) {
+router.put('/me', requireUser, function (req, res) {
   var email = req.body.email;
   var password = req.body.password;
   if (password) {

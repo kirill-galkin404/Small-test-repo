@@ -2,12 +2,12 @@ var express = require('express');
 var moment = require('moment');
 var _ = require('lodash');
 var db = require('../lib/db');
-var auth = require('../lib/auth');
+var requireUser = require('../middleware/requireUser');
 var config = require('../config');
 
 var router = express.Router();
 
-router.use(auth.requireUser);
+router.use(requireUser);
 
 function formatTodo(t) {
   t.done = t.done == 1;
