@@ -23,6 +23,9 @@ That requires a toolchain, ES modules and a `package.json`.
   with a `#root` element). Both are Vite build inputs.
 - Observable behavior, element ids (`#ttl`, `#d`), `data-action` values and
   `style.css` are unchanged. State remains in memory only.
+- The per-action `console.log` debug output of the old `counter.js` is
+  deliberately dropped so the reducer stays pure. Only the unknown-action
+  `console.warn` remains.
 
 ## Consequences
 

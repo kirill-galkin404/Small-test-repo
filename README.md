@@ -5,7 +5,7 @@ State lives in memory only: reloading the page resets it.
 
 ## Setup
 
-Requires Node.js (a current LTS release) and npm.
+Requires Node.js 22.12 or newer (22.x, 24.x or 26+) and npm. The `engines` field in `package.json` records this range.
 
 ```sh
 npm ci            # install exact versions from package-lock.json
