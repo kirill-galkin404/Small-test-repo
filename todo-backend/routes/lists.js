@@ -2,11 +2,11 @@ var express = require('express');
 var moment = require('moment');
 var async = require('async');
 var db = require('../lib/db');
-var auth = require('../lib/auth');
+var requireUser = require('../middleware/requireUser');
 
 var router = express.Router();
 
-router.use(auth.requireUser);
+router.use(requireUser);
 
 // GET /lists - lists with todo counts
 router.get('/', function (req, res) {

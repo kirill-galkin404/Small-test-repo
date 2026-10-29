@@ -3,11 +3,11 @@ var moment = require('moment');
 var async = require('async');
 var _ = require('lodash');
 var db = require('../lib/db');
-var auth = require('../lib/auth');
+var requireUser = require('../middleware/requireUser');
 
 var router = express.Router();
 
-router.get('/', auth.requireUser, function (req, res) {
+router.get('/', requireUser, function (req, res) {
   var userId = req.user.id;
   var today = moment().format('YYYY-MM-DD');
 

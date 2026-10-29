@@ -10,9 +10,9 @@ var sqlite3 = require('sqlite3');
 var backendRoot = path.join(__dirname, '..', '..');
 
 // The only place that knows how to obtain the express app. Repoint here if
-// the app moves (e.g. to app.js).
+// the app moves.
 function loadApp() {
-  return require('../../server');
+  return require('../../app');
 }
 
 // Creates a temp SQLite file, seeds it with seed.js (demo / demo), points
