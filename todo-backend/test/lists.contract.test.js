@@ -174,3 +174,15 @@ test('DELETE /api/lists/:id with an injection-style id does not delete other lis
   var demo = await h.request().get('/api/lists').set(auth(await h.loginDemo()));
   assert.equal(demo.body.length, 3);
 });
+
+test('DELETE /api/lists/:id for another users list yields 404 and keeps list and todos', async function () {
+  var owner = await h.registerUser('ldelown');
+  var intruder = await h.registerUser('ldelint');
+  var list = (await h.request().post('/api/lists').set(auth(owner.token)).send({ name: 'Private' })).body;
+  await h.request().post('/api/todos').set(auth(owner.token)).send({ title: 'keep me', list_id: list.id });
+
+  var res = await h.request().delete('/api/lists/' + list.id).set(auth(intruder.token));
+  assert.equal(res.status, 404);
+  assert.equal((await h.get('SELECT COUNT(*) AS c FROM lists WHERE id = ?', [list.id])).c, 1);
+  assert.equal((await h.get('SELECT COUNT(*) AS c FROM todos WHERE list_id = ?', [list.id])).c, 1);
+});

@@ -77,7 +77,7 @@ export default function TodosPage() {
       (data) => {
         setLists(data);
         if (view.current.selectedId === null && data.length) {
-          loadTodos({ selectedId: data[0].id });
+          loadTodos({ selectedId: data[0].id, page: 1 });
         }
       },
       () => setGlobalError('Could not load lists')
@@ -182,7 +182,7 @@ export default function TodosPage() {
         loadLists();
       },
       (err) => {
-        window.alert(err.data && err.data.error);
+        window.alert((err.data && err.data.error) || err.message);
       }
     );
   };

@@ -23,6 +23,11 @@ function wrap(handler) {
   };
 }
 
+async function ownsList(userId, listId) {
+  var list = await query.get('SELECT id FROM lists WHERE id = ? AND user_id = ?', [listId, userId]);
+  return !!list;
+}
+
 // GET /todos?list=1&done=0&q=milk&tag=home&sort=due&page=1
 router.get('/', wrap(async function (req, res) {
   var sql = 'SELECT * FROM todos WHERE user_id = ?';
@@ -74,6 +79,9 @@ router.post('/', wrap(async function (req, res) {
   var now = moment().format();
 
   var listId = b.list_id;
+  if (listId && !(await ownsList(req.user.id, listId))) {
+    return res.status(404).send({ error: 'list not found' });
+  }
   if (!listId) {
     // put into Inbox
     var inbox = await query.get("SELECT id FROM lists WHERE user_id = ? AND name = 'Inbox'", [req.user.id]);
@@ -101,6 +109,10 @@ router.put('/:id', wrap(async function (req, res) {
     tags: b.tags !== undefined ? (_.isArray(b.tags) ? b.tags.join(',') : b.tags) : todo.tags
   };
 
+  if (b.list_id !== undefined && b.list_id !== null && !(await ownsList(req.user.id, b.list_id))) {
+    return res.status(404).send({ error: 'list not found' });
+  }
+
   await query.run('UPDATE todos SET title=?, notes=?, done=?, priority=?, due_date=?, list_id=?, tags=?, updated_at=? WHERE id=?',
     [updated.title, updated.notes, updated.done, updated.priority, updated.due_date, updated.list_id, updated.tags, moment().format(), todo.id]);
   var row = await query.get('SELECT * FROM todos WHERE id = ?', [todo.id]);
@@ -108,7 +120,9 @@ router.put('/:id', wrap(async function (req, res) {
 }));
 
 router.post('/:id/toggle', wrap(async function (req, res) {
-  await query.run('UPDATE todos SET done = 1 - done, updated_at = ? WHERE id = ?', [moment().format(), req.params.id]);
+  var result = await query.run('UPDATE todos SET done = 1 - done, updated_at = ? WHERE id = ? AND user_id = ?',
+    [moment().format(), req.params.id, req.user.id]);
+  if (result.changes == 0) return res.status(404).send({ error: 'not found' });
   res.send({ ok: true });
 }));
 

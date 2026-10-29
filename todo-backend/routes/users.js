@@ -33,13 +33,16 @@ router.post('/register', wrap(async function (req, res) {
     return res.status(400).send({ error: 'username and password required' });
   }
 
-  var existing = await query.get('SELECT id FROM users WHERE username = ?', [username]);
-  if (existing) return res.status(409).send({ error: 'user exists' });
-
   var hash = await passwords.hashPassword(password);
-  var inserted = await query.run('INSERT INTO users (username, password, email, created_at) VALUES (?, ?, ?, ?)',
-    [username, hash, email, moment().format()]);
-  var userId = inserted.lastID;
+  // check and insert in one transaction so concurrent registrations cannot both pass
+  var userId = await query.withTransaction(async function (tx) {
+    var existing = await tx.get('SELECT id FROM users WHERE username = ?', [username]);
+    if (existing) return null;
+    var inserted = await tx.run('INSERT INTO users (username, password, email, created_at) VALUES (?, ?, ?, ?)',
+      [username, hash, email, moment().format()]);
+    return inserted.lastID;
+  });
+  if (userId === null) return res.status(409).send({ error: 'user exists' });
 
   // create default list for new user
   try {

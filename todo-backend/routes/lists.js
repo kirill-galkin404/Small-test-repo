@@ -43,12 +43,12 @@ router.put('/:id', wrap(async function (req, res) {
 
 // deleting a list deletes its todos too, atomically
 router.delete('/:id', wrap(async function (req, res) {
-  var list = await query.get('SELECT * FROM lists WHERE id = ?', [req.params.id]);
+  var list = await query.get('SELECT * FROM lists WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
   if (!list) return res.status(404).send({ error: 'not found' });
   if (list.name == 'Inbox') return res.status(400).send({ error: 'cannot delete Inbox' });
   await query.withTransaction(async function (tx) {
-    await tx.run('DELETE FROM todos WHERE list_id = ?', [list.id]);
-    await tx.run('DELETE FROM lists WHERE id = ?', [list.id]);
+    await tx.run('DELETE FROM todos WHERE list_id = ? AND user_id = ?', [list.id, req.user.id]);
+    await tx.run('DELETE FROM lists WHERE id = ? AND user_id = ?', [list.id, req.user.id]);
   });
   res.send({ ok: true });
 }));

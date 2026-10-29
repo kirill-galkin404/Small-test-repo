@@ -5,7 +5,11 @@ var config = require('./config');
 
 var app = express();
 
-app.use(morgan('dev'));
+// ?token= is accepted for auth, so keep it out of the request log
+morgan.token('safe-url', function (req) {
+  return String(req.originalUrl || req.url).replace(/([?&]token=)[^&]*/gi, '$1[redacted]');
+});
+app.use(morgan(':method :safe-url :status :response-time ms - :res[content-length]'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

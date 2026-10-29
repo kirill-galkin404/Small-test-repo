@@ -422,3 +422,30 @@ test('POST /api/todos/bulk with an unknown or missing action yields 400', async 
   var missing = await h.request().post('/api/todos/bulk').set(auth(u.token)).send({ list_id: list.id });
   assert.equal(missing.status, 400);
 });
+
+test('POST /api/todos/:id/toggle on another users todo yields 404 and leaves it unchanged', async function () {
+  var owner = await h.registerUser('togown');
+  var intruder = await h.registerUser('togint');
+  var t = await createTodo(owner.token, { title: 'Mine' });
+
+  var res = await h.request().post('/api/todos/' + t.id + '/toggle').set(auth(intruder.token));
+  assert.equal(res.status, 404);
+  assert.equal((await h.get('SELECT done FROM todos WHERE id = ?', [t.id])).done, 0);
+
+  var missing = await h.request().post('/api/todos/999999/toggle').set(auth(owner.token));
+  assert.equal(missing.status, 404);
+});
+
+test('POST and PUT /api/todos refuse a list_id owned by another user', async function () {
+  var owner = await h.registerUser('lidown');
+  var intruder = await h.registerUser('lidint');
+  var list = (await h.request().post('/api/lists').set(auth(owner.token)).send({ name: 'Theirs' })).body;
+
+  var post = await h.request().post('/api/todos').set(auth(intruder.token)).send({ title: 'x', list_id: list.id });
+  assert.equal(post.status, 404);
+
+  var mine = await createTodo(intruder.token, { title: 'y' });
+  var put = await h.request().put('/api/todos/' + mine.id).set(auth(intruder.token)).send({ list_id: list.id });
+  assert.equal(put.status, 404);
+  assert.equal((await h.get('SELECT COUNT(*) AS c FROM todos WHERE list_id = ?', [list.id])).c, 0);
+});
