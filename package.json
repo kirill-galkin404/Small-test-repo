@@ -1,0 +1,20 @@
+{
+  "name": "small-test-repo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Counter widget plus the todo backend and frontend apps",
+  "workspaces": [
+    "todo-backend",
+    "todo-frontend"
+  ],
+  "scripts": {
+    "seed": "npm run seed --workspace todo-backend",
+    "start": "npm run start --workspace todo-backend",
+    "dev": "concurrently -n api,web \"npm run start --workspace todo-backend\" \"npm run dev --workspace todo-frontend\"",
+    "test": "npm test --workspaces --if-present",
+    "build": "npm run build --workspace todo-frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1"
+  }
+}
