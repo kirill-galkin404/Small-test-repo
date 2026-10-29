@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted
+Superseded by [0002](0002-adopt-vite-react-build-step.md)
 
 ## Context
 
