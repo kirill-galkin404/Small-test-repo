@@ -36,7 +36,7 @@ Counter behavior and styles are unchanged by the rewrite.
 
 ## Consequences
 
-- A Node toolchain is required to develop and build (Node >= 20.19).
+- A Node toolchain is required to develop and build (Node ^22.13 or >= 24).
 - The built `dist/` output must be served over HTTP. `file://` is not
   supported, so the "open the file directly in a browser" portability from
   ADR 0001 is lost.

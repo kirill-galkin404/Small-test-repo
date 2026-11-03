@@ -10,7 +10,7 @@ A small counter built with Vite and React.
 
 ## Prerequisites
 
-- Node.js >= 20.19 (see `engines` in `package.json`)
+- Node.js ^22.13 or >= 24 (see `engines` in `package.json`)
 - npm
 
 ## Commands

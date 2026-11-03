@@ -8,7 +8,7 @@
 // included; clicks is never reset). There are no bounds on `value`.
 //
 // An unrecognized action returns the identical state object. It also calls
-// console.warn, an accepted impurity (D-0002). The original console.log traces
+// console.warn, an accepted impurity kept for parity with the original. The original console.log traces
 // are intentionally dropped.
 
 export const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
