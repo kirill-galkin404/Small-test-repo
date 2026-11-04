@@ -2,6 +2,7 @@ const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
+// One delegated listener on #counter handles every button; see README "Development notes".
 document.getElementById("counter").addEventListener("click", function(event){
   var action = event.target.dataset.action
   if(!action){

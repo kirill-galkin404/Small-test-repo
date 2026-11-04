@@ -1,6 +1,7 @@
 # Counter app
 
-Open `counter.html` in a browser; there is no build step and no server.
+Open `counter.html` in any modern browser; there is no build step, no server and
+no install.
 
 ## Development notes
 
