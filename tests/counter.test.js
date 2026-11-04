@@ -141,6 +141,36 @@ test('click without data-action is ignored silently', () => {
   assert.strictEqual(app.warns.length, 0);
 });
 
+test('nested child click inside a data-action button dispatches that action', () => {
+  const app = load();
+  const button = { dataset: { action: 'ADD_FOUR' } };
+  const child = {
+    dataset: {},
+    closest(sel) { return sel === '[data-action]' ? button : null; },
+  };
+  app.el('counter').handlers.click({ target: child });
+  assert.deepStrictEqual(app.state(), { c: 4, cc: 1 });
+  assert.strictEqual(app.warns.length, 0);
+});
+
+test('nested child with unknown action name warns and is ignored', () => {
+  const app = load();
+  const button = { dataset: { action: 'BOGUS' } };
+  const child = { dataset: {}, closest() { return button; } };
+  app.el('counter').handlers.click({ target: child });
+  assert.deepStrictEqual(app.state(), { c: 0, cc: 0 });
+  assert.strictEqual(app.warns.length, 1);
+});
+
+test('click on child outside any data-action element changes nothing', () => {
+  const app = load();
+  const child = { dataset: {}, closest() { return null; } };
+  app.el('counter').handlers.click({ target: child });
+  assert.deepStrictEqual(app.state(), { c: 0, cc: 0 });
+  assert.strictEqual(app.warns.length, 0);
+  assert.strictEqual(app.el('d').innerHTML, '');
+});
+
 test('colour thresholds: >10 red, <0 blue, else black', () => {
   const app = load();
   const color = () => app.el('d').style.color;
