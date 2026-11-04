@@ -1,13 +1,13 @@
 const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
 var c = 0
-var cc = 0 // cc counts every dispatched action, shown as clicks in the title
+var cc = 0 // cc counts recognized actions, shown as clicks in the title
 
 document.getElementById("counter").addEventListener("click", function(event){
-  var action = event.target.dataset.action
-  if(!action){
+  var button = event.target.closest("[data-action]")
+  if(!button){
     return;
   }
-  dispatch(ACTION[action])
+  dispatch(ACTION[button.dataset.action])
 });
 
 function dispatch(x){
