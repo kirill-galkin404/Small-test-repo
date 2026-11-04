@@ -6,20 +6,24 @@ Accepted
 
 ## Context
 
-`counter.html` is currently a single, self-contained HTML file:
+`counter.html` is the page entry point, and it is deliberately kept free of
+build tooling:
 
 - There is no build step, no bundler, and no `package.json` anywhere in the
   repository.
-- There is no module system: the page's `<script>` block is a classic
-  (non-module) inline script, and it has no external JS or CSS dependencies.
+- There is no module system: `counter.js` is an external classic
+  (non-module) script, loaded by `counter.html` via `<script src="counter.js">`,
+  and `style.css` is an external stylesheet loaded via `<link rel="stylesheet">`.
+  Both are plain assets served alongside `counter.html`; neither is generated.
 - Behavior is wired via a `data-action` attribute on each button (e.g.
   `data-action="INCREMENT"`), read by a single event-delegated
   `addEventListener("click", ...)` registered on the `#counter` container.
-  The handler reads `event.target.dataset.action`, looks it up in the
-  global, frozen `ACTION` object, and calls the global `dispatch(...)`
-  function — the script explicitly relies on staying a classic script so
-  that `ACTION` and `dispatch` remain reachable from the delegated click
-  handler.
+  The handler resolves the button with `event.target.closest("[data-action]")`
+  (so clicks on nested elements still work), looks up
+  `button.dataset.action` in the global, frozen `ACTION` object, and calls
+  the global `dispatch(...)` function — the script explicitly relies on
+  staying a classic script so that `ACTION` and `dispatch` remain reachable
+  from the delegated click handler.
 - The entire state-change path is a single, unconditional cycle: a click
   invokes `dispatch`, whose `switch` statement mutates state for the
   matched `ACTION` case (or returns early on an unrecognized action), then
@@ -32,8 +36,9 @@ exclusive starting points for future work.
 
 ### Fork A — Stay single-file
 
-Keep `counter.html` as a single file with no build tooling and no module
-system. Internal restructuring is still possible (for example, wrapping the
+Keep `counter.html` and its external classic assets (`counter.js`,
+`style.css`) with no build tooling and no module system. Internal
+restructuring is still possible (for example, wrapping the
 script in an IIFE for scoping), but there is no bundler, no `package.json`,
 and no ES modules.
 
@@ -66,7 +71,8 @@ scoping) must not introduce a bundler, a module system, or a `package.json`.
 ## Consequences
 
 - Future refactors of `counter.html` must preserve the no-build-step,
-  no-module-system, single-file constraint.
+  no-module-system, single-file constraint. Fork A means no build tooling:
+  `counter.js` and `style.css` stay hand-written, external classic assets.
 - `ACTION` and `dispatch` (or their replacements) must remain reachable
   from wherever click handling is wired, without relying on a module loader.
 - If testability needs grow substantially in the future, that would be a
@@ -78,9 +84,22 @@ scoping) must not introduce a bundler, a module system, or a `package.json`.
 The Context, Fork A, and Consequences sections above were updated to
 describe the wiring mechanism as actually implemented: buttons carry a
 `data-action` attribute, a single delegated `addEventListener` on
-`#counter` reads `event.target.dataset.action` and calls `dispatch(x)`.
+`#counter` resolves the button with `event.target.closest("[data-action]")`
+and calls `dispatch(ACTION[button.dataset.action])`.
 Earlier prose described an inline `onclick="doOperation(ACTION.X)"` wiring
 and framed the delegated listener as a possible future refactor; both have
 since been implemented in `counter.js`/`counter.html`, so this amendment
 brings the ADR's description in line with the code. This amendment does not
 change `Status: Accepted` or the Fork A decision itself.
+
+## Amendment (2026-11-04)
+
+The Context described the page as one self-contained file with its script
+embedded in the HTML and no separate assets, which does not match the code: `counter.js` is
+an external classic script loaded by `counter.html` via `<script src>`, and
+`style.css` is an external stylesheet. This amendment corrects that wording
+and defines "single-file" as used by this ADR: no build step and no module
+system, with `counter.js` and `style.css` as external classic assets alongside
+`counter.html`. The delegated handler description was likewise corrected to
+`event.target.closest("[data-action]")`. `Status: Accepted` and the text of the
+Decision section are unchanged.
