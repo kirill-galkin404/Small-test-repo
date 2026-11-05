@@ -32,7 +32,10 @@ We adopt **Fork B** from ADR 0001: introduce a build step.
 - `counter.html` and `counter.js` are removed; `index.html` becomes the entry
   point.
 - `style.css` is kept unchanged.
-- Counter behaviour is unchanged by this rewrite.
+- Counter behaviour is unchanged by this rewrite, with one deliberate
+  exception: the original `dispatch()` debug `console.log` output is dropped.
+  The reducer is pure (React may invoke it twice in StrictMode), so it only
+  keeps the `console.warn` for unrecognised actions.
 
 ## Consequences
 
