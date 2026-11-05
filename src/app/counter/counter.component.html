@@ -1,0 +1,9 @@
+<div id="counter" (click)="onClick($event)">
+  <h1 id="ttl">{{ title() }}</h1>
+  <p id="d" [style.color]="color()">{{ state().value }}</p>
+  <button data-action="INCREMENT">+</button>
+  <button data-action="DECREMENT">-</button>
+  <button data-action="RESET">reset</button>
+  <button data-action="ADD_FOUR">+4</button>
+  <button data-action="DOUBLE">x2</button>
+</div>
