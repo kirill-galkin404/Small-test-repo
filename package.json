@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "test:legacy": "playwright test --project=legacy"
+    "test:legacy": "playwright test --project=legacy",
+    "test:react": "playwright test --project=react"
   },
   "devDependencies": {
     "@playwright/test": "~1.56.0",

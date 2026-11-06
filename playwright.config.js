@@ -9,6 +9,15 @@ const legacyEntry = pathToFileURL(
   path.join(__dirname, "tests", "fixtures", "legacy-counter", "counter.html")
 ).href;
 
+const PORT = 4173;
+
+// The legacy project needs no server; skip the build when only it is selected,
+// so `npm run test:legacy` does not depend on the React build.
+const args = process.argv;
+const legacyOnly = args.some(
+  (a, i) => a === "--project=legacy" || (a === "--project" && args[i + 1] === "legacy")
+);
+
 module.exports = defineConfig({
   testDir: "./tests",
   projects: [
@@ -18,5 +27,19 @@ module.exports = defineConfig({
       testMatch: "counter.spec.js",
       use: { baseURL: legacyEntry },
     },
+    {
+      // The React app, built and served by `vite preview` at /.
+      name: "react",
+      testMatch: ["counter.spec.js", "url-compat.spec.js"],
+      use: { baseURL: `http://localhost:${PORT}/` },
+    },
   ],
+  webServer: legacyOnly
+    ? undefined
+    : {
+        command: `npm run build && npm run preview -- --port ${PORT} --strictPort`,
+        url: `http://localhost:${PORT}/`,
+        reuseExistingServer: false,
+        timeout: 120000,
+      },
 });
