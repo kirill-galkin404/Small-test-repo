@@ -1,4 +1,4 @@
-const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5 });
+const ACTION = Object.freeze({ INCREMENT: 1, DECREMENT: 2, RESET: 3, ADD_FOUR: 4, DOUBLE: 5, ADD_FIVE: 6 });
 var c = 0
 var cc = 0 // cc counts every dispatched action, shown as clicks in the title
 
@@ -33,6 +33,10 @@ function dispatch(x){
     case ACTION.DOUBLE:
       console.log("dispatch: ACTION.DOUBLE")
       c = c * 2
+      break;
+    case ACTION.ADD_FIVE:
+      console.log("dispatch: ACTION.ADD_FIVE")
+      c = c + 5
       break;
     default:
       console.warn("dispatch: unrecognized action", x)
